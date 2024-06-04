@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   web:
-    build: ./API_MJ
+    build: ./SITE_MJ
     image: duunky/montainjourney:API-MJ
     container_name: API-Mountain-Journey
     ports:

@@ -23,4 +23,4 @@ function centerMapOnParis() {
 }
 
 // Ajout d'un écouteur d'événement pour le bouton
-document.getElementById('centerButton').addEventListener('click', centerMapOnParis);
+document.getElementById('parcours-Paris').addEventListener('click', centerMapOnParis);

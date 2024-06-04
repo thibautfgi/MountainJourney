@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Journey</title>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        #map {
+            flex: 1;
+        }
+        .container-fluid {
+            padding: 0;
+        }
+        .sidebar {
+            width: 25%;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 20px;
+            background-color: #f8f9fa;
+        }
+        .map-container {
+            width: 75%;
+            height: 100vh;
+        }
+        .card img {
+            height: 150px;
+            object-fit: cover;
+        }
+        .filters {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row no-gutters">
+            <div class="col-md-3 sidebar">
+                <h2>Filtres</h2>
+                <div class="filters">
+                    <input type="text" class="form-control mb-2" placeholder="Rechercher une ville...">
+                    <select class="form-control mb-2">
+                        <option>Activité</option>
+                        <option>Randonnée</option>
+                        <option>Vélo</option>
+                        <option>Course</option>
+                    </select>
+                    <select class="form-control mb-2">
+                        <option>Distance</option>
+                        <option>0-5 km</option>
+                        <option>5-10 km</option>
+                        <option>10-20 km</option>
+                    </select>
+                </div>
+                <h2>Itinéraires sélectionnés</h2>
+                <div id="itineraires" class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        <div class="card" id="parcours-Paris" >
+                            <img src="data:image/jpeg;base64,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" class="card-img-top" alt="...">
+                            <div class="card-body" >
+                                <h5 class="card-title">GR®75 : Tour de Paris</h5>
+                                <p class="card-text">Pantin, Seine-Saint-Denis, France</p>
+                                <p class="card-text"><small class="text-muted">53,6 km - Modéré</small></p>
+                            </div>
+                        </div>
+                    </a>
+                    <!-- Ajoutez plus d'itinéraires ici -->
+                </div>
+            </div>
+            <div class="col-md-9 map-container">
+                <div id="map"></div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.9.2/mapbox-gl.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
