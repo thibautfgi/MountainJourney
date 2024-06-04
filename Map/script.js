@@ -1,5 +1,6 @@
 // Remplace 'YOUR_MAPBOX_ACCESS_TOKEN' par ton propre token d'accès Mapbox
-mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGFjaGlwcyIsImEiOiJjbHdxcGQ2ajUwNDNkMmxzZTFiODdwZzV6In0._cOwcGPG1sDGSf25DKU5Ig';
+//test
+mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGFjaGlwcyIsImEiOiJjbHgwZHgxcGowaG01MmlyMnhhb3dyZXJxIn0.dcYR9tSRJ2AUaoCsJ7gbVA';
 
 const parisCoordinates = [2.3522, 48.8566]; // Coordonnées de Paris
 
