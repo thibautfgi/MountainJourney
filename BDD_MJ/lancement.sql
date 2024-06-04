@@ -1,5 +1,9 @@
-DROP TABLE IF EXISTS 'Utilisateur';
-CREATE TABLE Utilisateur (
+-- Création de la base de données
+CREATE DATABASE IF NOT EXISTS MountainJourney;
+USE MountainJourney;
+
+-- Création de la table Utilisateur
+CREATE TABLE IF NOT EXISTS Utilisateur (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -7,8 +11,8 @@ CREATE TABLE Utilisateur (
     date_inscription TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-DROP TABLE IF EXISTS 'Parcours';
-CREATE TABLE Parcours (
+-- Création de la table Parcours
+CREATE TABLE IF NOT EXISTS Parcours (
     id INT AUTO_INCREMENT PRIMARY KEY,
     titre VARCHAR(255) NOT NULL,
     description TEXT,
@@ -21,9 +25,8 @@ CREATE TABLE Parcours (
     FOREIGN KEY (utilisateur_id) REFERENCES Utilisateur(id) ON DELETE CASCADE
 );
 
-
-DROP TABLE IF EXISTS 'Commentaire';
-CREATE TABLE Commentaire (
+-- Création de la table Commentaire
+CREATE TABLE IF NOT EXISTS Commentaire (
     id INT AUTO_INCREMENT PRIMARY KEY,
     contenu TEXT NOT NULL,
     date_creation TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -33,8 +36,8 @@ CREATE TABLE Commentaire (
     FOREIGN KEY (parcours_id) REFERENCES Parcours(id) ON DELETE CASCADE
 );
 
-DROP TABLE IF EXISTS 'Favori';
-CREATE TABLE Favori (
+-- Création de la table Favori
+CREATE TABLE IF NOT EXISTS Favori (
     id INT AUTO_INCREMENT PRIMARY KEY,
     utilisateur_id INT,
     parcours_id INT,
@@ -43,7 +46,10 @@ CREATE TABLE Favori (
     FOREIGN KEY (parcours_id) REFERENCES Parcours(id) ON DELETE CASCADE
 );
 
-
-CREATE USER 'api_user'@'%' IDENTIFIED BY 'Azerty123';
+-- Création d'un utilisateur pour l'API
+CREATE USER 'api_user'@'%' IDENTIFIED BY 'securepassword';
 GRANT SELECT, INSERT, UPDATE, DELETE ON MountainJourney.* TO 'api_user'@'%';
 FLUSH PRIVILEGES;
+
+-- Insérer des données de test
+INSERT INTO Utilisateur (nom, email, mot_de_passe) VALUES ('Admin', 'admin@mountainjourney.com', 'adminpassword');
