@@ -6,3 +6,4 @@ namespace Models
         public int User_Id { get; set; }
         public string Token_Value { get; set; }
     }
+}

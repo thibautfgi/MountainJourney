@@ -66,14 +66,16 @@ class SimpleHttpServer
 
         if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/status")
         {
+
+            // TODO: rajoute une verification connection BDD la sa test que si le code run
             var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-            responseString = "The api is running!  " + (int)HttpStatusCode.OK ;
+            responseString = "The api is running, Mountain Jounrney is alive!  " + (int)HttpStatusCode.OK ;
         }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/users")) // tchek si l'url commence avec api/users
-        {
-            responseString = await new Controllers.UsersController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/users")) // tchek si l'url commence avec api/users
+        // {
+        //     responseString = await new Controllers.UsersController().ProcessRequest(request);
+        // }
 
         // else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // tchek si l'url commence avec api/comments
         // {
@@ -106,10 +108,10 @@ class SimpleHttpServer
         //     responseString = await new Controllers.RoutesController().ProcessRequest(request);
         // }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // tchek si l'url commence avec api/tokens
-        {
-            responseString = await new Controllers.TokensController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // tchek si l'url commence avec api/tokens
+        // {
+        //     responseString = await new Controllers.TokensController().ProcessRequest(request);
+        // }
 
         else
         {
