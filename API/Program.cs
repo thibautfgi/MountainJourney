@@ -75,32 +75,38 @@ class SimpleHttpServer
             responseString = await new Controllers.UsersController().ProcessRequest(request);
         }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/products")) // tchek si l'url commence avec api/users
-        {
-            responseString = await new Controllers.ProductsController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // tchek si l'url commence avec api/comments
+        // {
+        //     responseString = await new Controllers.CommentsController().ProcessRequest(request);
+        // }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/shoplists")) // tchek si l'url commence avec api/users
-        {
-            responseString = await new Controllers.ShoplistsController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/friendlists")) // tchek si l'url commence avec api/friendlists
+        // {
+        //     responseString = await new Controllers.FriendlistsController().ProcessRequest(request);
+        // }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/carts")) // tchek si l'url commence avec api/users
-        {
-            responseString = await new Controllers.CartsController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/likes")) // tchek si l'url commence avec api/likes
+        // {
+        //     responseString = await new Controllers.LikesController().ProcessRequest(request);
+        // }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/commands")) // tchek si l'url commence avec api/users
-        {
-            responseString = await new Controllers.CommandsController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/maps")) // tchek si l'url commence avec api/maps
+        // {
+        //     responseString = await new Controllers.MapsController().ProcessRequest(request);
+        // }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/invoices")) // tchek si l'url commence avec api/users
-        {
-            responseString = await new Controllers.InvoicesController().ProcessRequest(request);
-        }
+        // else if (request.Url.AbsolutePath.StartsWith("/api/marks")) // tchek si l'url commence avec api/marks
+        // {
+        //     responseString = await new Controllers.MarksController().ProcessRequest(request);
+        // }
 
-        else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // tchek si l'url commence avec api/users
+
+        // else if (request.Url.AbsolutePath.StartsWith("/api/routes")) // tchek si l'url commence avec api/routes
+        // {
+        //     responseString = await new Controllers.RoutesController().ProcessRequest(request);
+        // }
+
+        else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // tchek si l'url commence avec api/tokens
         {
             responseString = await new Controllers.TokensController().ProcessRequest(request);
         }

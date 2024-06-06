@@ -12,7 +12,7 @@ CREATE TABLE users (
     User_Id int NOT NULL AUTO_INCREMENT,
     User_FirstName VARCHAR(80),
     User_LastName VARCHAR(80),
-    User_Phone BIGINT, -- Correction du type de données
+    User_Phone VARCHAR(80),
     User_Email VARCHAR(80) NOT NULL,
     User_Password VARCHAR(80) NOT NULL,
     PRIMARY KEY (`User_Id`)
