@@ -3,10 +3,12 @@ version: '3.8'
 services:
   web:
     build: ./SITE_MJ
-    image: duunky/montainjourney:API-MJ
-    container_name: API-Mountain-Journey
+    image: duunky/montainjourney:SITE_MJ
+    container_name: SITE-Mountain-Journey
     ports:
       - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       my_network:
         ipv4_address: 172.16.238.4
