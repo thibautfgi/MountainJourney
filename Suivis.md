@@ -6,6 +6,8 @@ mise en place de test de la db via mysql workbench
 ajout de fake data et test des delete en cascade afin de verifier si tt les relations fonctionne
 mise en place model api
 controller api
+ajout d'une fonctionnalite de test de connection a la db dans l'api
+
 
 
 

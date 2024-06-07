@@ -51,10 +51,10 @@ class SimpleHttpServer
             responseString = await HttpTestConnectionDb();
         }
 
-                // else if (request.Url.AbsolutePath.StartsWith("/api/users")) // tchek si l'url commence avec api/users
-        // {
-        //     responseString = await new Controllers.UsersController().ProcessRequest(request);
-        // }
+                else if (request.Url.AbsolutePath.StartsWith("/api/users")) // tchek si l'url commence avec api/users
+        {
+            responseString = await new Controllers.UsersController().ProcessRequest(request);
+        }
 
         // else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // tchek si l'url commence avec api/comments
         // {
