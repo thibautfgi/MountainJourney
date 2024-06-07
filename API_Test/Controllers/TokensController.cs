@@ -12,7 +12,7 @@
 // {
 //     public class TokensController
 //     {
-//          private string connectionString = "Server=172.16.238.3;User ID=api;Password=Prout123;Database=MountainJourney";
+//          private string connectionString = "Server=localhost;User ID=root;Password=azerty;Database=mj";
 //         // mes identifiants pour me connect a mon mysql workbench
 
 // // TODO: 
