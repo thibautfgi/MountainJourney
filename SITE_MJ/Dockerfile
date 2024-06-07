@@ -4,7 +4,7 @@ RUN mkdir /API
 COPY Front /usr/share/nginx/html/
 COPY installationDotNet.sh /
 COPY start.sh /
-COPY API_MJ/API /API
+COPY API_MJ/ /API
 RUN chmod +x /installationDotNet.sh
 RUN chmod +x /start.sh
 RUN ./installationDotNet.sh
