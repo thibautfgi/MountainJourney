@@ -27,129 +27,166 @@ namespace Controllers
             {
                 var options = new JsonSerializerOptions { WriteIndented = true };
 
-                var verifiedUser = await TokenVerification.TokenVerify(request);
-                if (verifiedUser == null)
+                // var verifiedUser = await TokenVerification.TokenVerify(request);
+                // if (verifiedUser == null)
+                // {
+                //     responseString = "Unauthorized access, wrong or empty token, please refer to the admin for obtain a valid key";
+                // }
+                // else
+                // {
+                responseString = JsonSerializer.Serialize(await HttpGetAllUsers(), options);
+            }
+        
+            else if (request.HttpMethod == "GET" && request.Url.PathAndQuery.StartsWith("/api/users/"))
+            {
+                string[] strings = request.Url.PathAndQuery.Split('/');
+                string[] parts = strings; // separe notre url sur les "/"
+                if (parts.Length == 4 && int.TryParse(parts[3], out int id))
                 {
-                    responseString = "Unauthorized access, wrong token, please refer to the admin for obtain a valid key";
+                    var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
+                    responseString = JsonSerializer.Serialize(await HttpGetUserById(id), options);
+                    if (responseString == "null")
+                    {
+                    responseString = "Invalid id, Error =  " + (int)HttpStatusCode.BadRequest;
+                    }
+
+                }
+
+                // TODO:
+
+                else if (parts.Length == 5 && parts[4] == "comments" && int.TryParse(parts[3], out int myId))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var comments = await HttpGetCommentslistByUserId(myId);
+
+                    if (comments.Any())
+                    {
+                        responseString = JsonSerializer.Serialize(comments, options);
+                    }
+                    else
+                    {
+                        responseString = "Invalid id or no comments found, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+
+                // TODO:
+                else if (parts.Length == 5 && parts[4] == "friendlists" && int.TryParse(parts[3], out int myotherId))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var friendlists = await HttpGetFriendlistsByUserId(myotherId);
+
+                    if (friendlists.Any())
+                    {
+                        responseString = JsonSerializer.Serialize(friendlists, options);
+                    }
+                    else
+                    {
+                        responseString = "Invalid id or no friendlists found, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+                
+
+                // TODO:
+                else if (parts.Length == 5 && parts[4] == "likes" && int.TryParse(parts[3], out int mythirdId))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var likes = await HttpGetLikesByUserId(mythirdId);
+
+                    if (likes.Any())
+                    {
+                        responseString = JsonSerializer.Serialize(likes, options);
+                    }
+                    else
+                    {
+                        responseString = "Invalid id or no likes found, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+                
+                // TODO:
+                else if (parts.Length == 5 && parts[4] == "maps" && int.TryParse(parts[3], out int mylastId))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var maps = await HttpGetMapsByUserId(mylastId);
+
+                    if (maps.Any())
+                    {
+                        responseString = JsonSerializer.Serialize(maps, options);
+                    }
+                    else
+                    {
+                        responseString = "Invalid id or no maps found, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+
+                // TODO:
+                else if (parts.Length == 5 && parts[4] == "marks" && int.TryParse(parts[3], out int mylastId))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var marks = await HttpGetMarksByUserId(mylastId);
+
+                    if (marks.Any())
+                    {
+                        responseString = JsonSerializer.Serialize(marks, options);
+                    }
+                    else
+                    {
+                        responseString = "Invalid id or no marks found, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+
+                // TODO:
+                else if (parts.Length == 5 && parts[4] == "routes" && int.TryParse(parts[3], out int mylastId))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    var routes = await HttpGetRoutesByUserId(mylastId);
+
+                    if (routes.Any())
+                    {
+                        responseString = JsonSerializer.Serialize(routes, options);
+                    }
+                    else
+                    {
+                        responseString = "Invalid id or no routes found, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+                                    
+                else if (parts.Length > 4)
+                {
+                    responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
+                }
+                else if (request.Url.PathAndQuery == "/api/users/")
+                {
+                    responseString = "enter a id please, bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
                 }
                 else
                 {
-                    responseString = JsonSerializer.Serialize(await HttpGetAllUsers(), options);
+                    string myEndPointString = parts[3];
+
+                    if (myEndPointString.Contains("@"))
+                    {
+                        var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
+                        responseString = JsonSerializer.Serialize(await HttpGetUserByEmail(myEndPointString), options);
+
+                        if (responseString == "null")
+                        {
+                        responseString = "Invalid Name or email, Error =  " + (int)HttpStatusCode.BadRequest;
+                        }
+                    } 
+                    else
+                    {
+                        var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
+                        responseString = JsonSerializer.Serialize(await HttpGetUserByLastName(myEndPointString), options);
+                        
+                        if (responseString == "null")
+                        {
+                        responseString = "Invalid Name or email, Error =  " + (int)HttpStatusCode.BadRequest;
+                        }
+                    }
+
+                    
+                    
                 }
             }
-        
-//         //     else if (request.HttpMethod == "GET" && request.Url.PathAndQuery.StartsWith("/api/users/"))
-//         //     {
-//         //         string[] strings = request.Url.PathAndQuery.Split('/');
-//         //         string[] parts = strings; // separe notre url sur les "/"
-//         //         if (parts.Length == 4 && int.TryParse(parts[3], out int id))
-//         //         {
-//         //             var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-//         //             responseString = JsonSerializer.Serialize(await HttpGetUserById(id), options);
-//         //             if (responseString == "null")
-//         //             {
-//         //             responseString = "Invalid id, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //             }
-
-//         //         }
-
-//         //         else if (parts.Length == 5 && parts[4] == "shoplists" && int.TryParse(parts[3], out int myId))
-//         //         {
-//         //             var options = new JsonSerializerOptions { WriteIndented = true };
-//         //             var shoplists = await HttpGetShoplistByUserId(myId);
-
-//         //             if (shoplists.Any())
-//         //             {
-//         //                 responseString = JsonSerializer.Serialize(shoplists, options);
-//         //             }
-//         //             else
-//         //             {
-//         //                 responseString = "Invalid id or no shoplists found, Error = " + (int)HttpStatusCode.BadRequest;
-//         //             }
-//         //         }
-
-//         //         else if (parts.Length == 5 && parts[4] == "carts" && int.TryParse(parts[3], out int myotherId))
-//         //         {
-//         //             var options = new JsonSerializerOptions { WriteIndented = true };
-//         //             var shoplists = await HttpGetCartsByUserId(myotherId);
-
-//         //             if (shoplists.Any())
-//         //             {
-//         //                 responseString = JsonSerializer.Serialize(shoplists, options);
-//         //             }
-//         //             else
-//         //             {
-//         //                 responseString = "Invalid id or no shoplists found, Error = " + (int)HttpStatusCode.BadRequest;
-//         //             }
-//         //         }
-                
-//         //         else if (parts.Length == 5 && parts[4] == "commands" && int.TryParse(parts[3], out int mythirdId))
-//         //         {
-//         //             var options = new JsonSerializerOptions { WriteIndented = true };
-//         //             var shoplists = await HttpGetCommandsByUserId(mythirdId);
-
-//         //             if (shoplists.Any())
-//         //             {
-//         //                 responseString = JsonSerializer.Serialize(shoplists, options);
-//         //             }
-//         //             else
-//         //             {
-//         //                 responseString = "Invalid id or no commands found, Error = " + (int)HttpStatusCode.BadRequest;
-//         //             }
-//         //         }
-
-//         //         else if (parts.Length == 5 && parts[4] == "invoices" && int.TryParse(parts[3], out int mylastId))
-//         //         {
-//         //             var options = new JsonSerializerOptions { WriteIndented = true };
-//         //             var shoplists = await HttpGetInvoicesByUserId(mylastId);
-
-//         //             if (shoplists.Any())
-//         //             {
-//         //                 responseString = JsonSerializer.Serialize(shoplists, options);
-//         //             }
-//         //             else
-//         //             {
-//         //                 responseString = "Invalid id or no invoices found, Error = " + (int)HttpStatusCode.BadRequest;
-//         //             }
-//         //         }
-                                    
-//         //         else if (parts.Length > 4)
-//         //         {
-//         //             responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else if (request.Url.PathAndQuery == "/api/users/")
-//         //         {
-//         //             responseString = "enter a id please, bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else
-//         //         {
-//         //             string myEndPointString = parts[3];
-
-//         //             if (myEndPointString.Contains("@"))
-//         //             {
-//         //                 var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-//         //                 responseString = JsonSerializer.Serialize(await HttpGetUserByEmail(myEndPointString), options);
-
-//         //                 if (responseString == "null")
-//         //                 {
-//         //                 responseString = "Invalid Name or email, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //                 }
-//         //             } 
-//         //             else
-//         //             {
-//         //                 var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-//         //                 responseString = JsonSerializer.Serialize(await HttpGetUserByLastName(myEndPointString), options);
-                        
-//         //                 if (responseString == "null")
-//         //                 {
-//         //                 responseString = "Invalid Name or email, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //                 }
-//         //             }
-
-                    
-                    
-//         //         }
-//         //     }
 
 //         //     // POST
 
@@ -675,116 +712,116 @@ namespace Controllers
 
 
 
-//         private async Task<Users> HttpGetUserById(int id)
-//         {
+        private async Task<Users> HttpGetUserById(int id)
+        {
             
-//         Users user = null;
+        Users user = null;
 
-//             using (MySqlConnection connection = new MySqlConnection(connectionString))
-//             {
-//                 await connection.OpenAsync();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
 
-//                 string SqlRequest = "SELECT * FROM users WHERE User_Id = @UserId"; // ma query SQL
+                string SqlRequest = "SELECT * FROM users WHERE User_Id = @UserId"; // ma query SQL
 
-//                 using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                 {
-//                     command.Parameters.AddWithValue("@UserId", id); 
-//                     // permet d'envoyé des données dans la query par un @ en C#
+                using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", id); 
+                    // permet d'envoyé des données dans la query par un @ en C#
 
-//                     using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-//                     {
-//                         if (await reader.ReadAsync())
-//                         {
-//                             user = new Users
-//                             {
-//                                 User_Id = Convert.ToInt32(reader["User_Id"]),
-//                                 User_FirstName = reader["User_FirstName"].ToString(),
-//                                 User_LastName = reader["User_LastName"].ToString(),
-//                                 User_Email = reader["User_Email"].ToString(),
-//                                 User_Password = reader["User_Password"].ToString(),
-//                                 User_Phone = reader["User_Phone"].ToString(),
-//                             };
-//                         }
-//                     }
-//                 }
-//             }
+                    using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            user = new Users
+                            {
+                                User_Id = Convert.ToInt32(reader["User_Id"]),
+                                User_FirstName = reader["User_FirstName"].ToString(),
+                                User_LastName = reader["User_LastName"].ToString(),
+                                User_Email = reader["User_Email"].ToString(),
+                                User_Password = reader["User_Password"].ToString(),
+                                User_Phone = reader["User_Phone"].ToString(),
+                            };
+                        }
+                    }
+                }
+            }
 
-//             return user;
-//         }
+            return user;
+        }
 
-//         private async Task<Users> HttpGetUserByLastName(string name)
-//         {
+        private async Task<Users> HttpGetUserByLastName(string name)
+        {
             
-//         Users user = null;
+        Users user = null;
 
-//             using (MySqlConnection connection = new MySqlConnection(connectionString))
-//             {
-//                 await connection.OpenAsync();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
 
-//                 string SqlRequest = "SELECT * FROM users WHERE User_LastName = @UserLastName"; // ma query SQL
+                string SqlRequest = "SELECT * FROM users WHERE User_LastName = @UserLastName"; // ma query SQL
 
-//                 using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                 {
-//                     command.Parameters.AddWithValue("@UserLastName", name); 
-//                     // permet d'envoyé des données dans la query par un @ en C#
+                using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
+                {
+                    command.Parameters.AddWithValue("@UserLastName", name); 
+                    // permet d'envoyé des données dans la query par un @ en C#
 
-//                     using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-//                     {
-//                         if (await reader.ReadAsync())
-//                         {
-//                             user = new Users
-//                             {
-//                                 User_Id = Convert.ToInt32(reader["User_Id"]),
-//                                 User_FirstName = reader["User_FirstName"].ToString(),
-//                                 User_LastName = reader["User_LastName"].ToString(),
-//                                 User_Email = reader["User_Email"].ToString(),
-//                                 User_Password = reader["User_Password"].ToString(),
-//                                 User_Phone = reader["User_Phone"].ToString(),
-//                             };
-//                         }
-//                     }
-//                 }
-//             }
+                    using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            user = new Users
+                            {
+                                User_Id = Convert.ToInt32(reader["User_Id"]),
+                                User_FirstName = reader["User_FirstName"].ToString(),
+                                User_LastName = reader["User_LastName"].ToString(),
+                                User_Email = reader["User_Email"].ToString(),
+                                User_Password = reader["User_Password"].ToString(),
+                                User_Phone = reader["User_Phone"].ToString(),
+                            };
+                        }
+                    }
+                }
+            }
 
-//             return user;
-//         }
+            return user;
+        }
 
-//         private async Task<Users> HttpGetUserByEmail(string email)
-//         {
+        private async Task<Users> HttpGetUserByEmail(string email)
+        {
             
-//         Users user = null;
+        Users user = null;
 
-//             using (MySqlConnection connection = new MySqlConnection(connectionString))
-//             {
-//                 await connection.OpenAsync();
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
 
-//                 string SqlRequest = "SELECT * FROM users WHERE User_Email = @UserEmail"; // ma query SQL
+                string SqlRequest = "SELECT * FROM users WHERE User_Email = @UserEmail"; // ma query SQL
 
-//                 using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                 {
-//                     command.Parameters.AddWithValue("@UserEmail", email); 
-//                     // permet d'envoyé des données dans la query par un @ en C#
+                using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
+                {
+                    command.Parameters.AddWithValue("@UserEmail", email); 
+                    // permet d'envoyé des données dans la query par un @ en C#
 
-//                     using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-//                     {
-//                         if (await reader.ReadAsync())
-//                         {
-//                             user = new Users
-//                             {
-//                                 User_Id = Convert.ToInt32(reader["User_Id"]),
-//                                 User_FirstName = reader["User_FirstName"].ToString(),
-//                                 User_LastName = reader["User_LastName"].ToString(),
-//                                 User_Email = reader["User_Email"].ToString(),
-//                                 User_Password = reader["User_Password"].ToString(),
-//                                 User_Phone = reader["User_Phone"].ToString(),
-//                             };
-//                         }
-//                     }
-//                 }
-//             }
+                    using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            user = new Users
+                            {
+                                User_Id = Convert.ToInt32(reader["User_Id"]),
+                                User_FirstName = reader["User_FirstName"].ToString(),
+                                User_LastName = reader["User_LastName"].ToString(),
+                                User_Email = reader["User_Email"].ToString(),
+                                User_Password = reader["User_Password"].ToString(),
+                                User_Phone = reader["User_Phone"].ToString(),
+                            };
+                        }
+                    }
+                }
+            }
 
-//             return user;
-//         }
+            return user;
+        }
 
 //         private async Task<string> HttpDelUserById(int id)
 //         {
