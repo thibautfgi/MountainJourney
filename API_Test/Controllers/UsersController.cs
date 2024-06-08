@@ -313,89 +313,115 @@ namespace Controllers
         }
 
 
-//         //     //DELETE
+            //DELETE
 
-//         //     else if (request.HttpMethod == "DELETE" && request.Url.PathAndQuery.StartsWith("/api/users/"))
-//         //     {
-//         //         string[] strings = request.Url.PathAndQuery.Split('/');
-//         //         string[] parts = strings; // separe notre url sur les "/"
-//         //         if (parts.Length == 4 && int.TryParse(parts[3], out int id))
-//         //         {
-//         //             var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-//         //             responseString = JsonSerializer.Serialize(await HttpDelUserById(id), options);
+        else if (request.HttpMethod == "DELETE" && request.Url.PathAndQuery.StartsWith("/api/users/"))
+        {
+            string[] strings = request.Url.PathAndQuery.Split('/');
+            string[] parts = strings; // Separate the URL by "/"
 
-//         //         }
-//         //         else if (parts.Length > 4)
-//         //         {
-//         //             responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else if (request.Url.PathAndQuery == "/api/users/")
-//         //         {
-//         //             responseString = "enter a id please, bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else
-//         //         {
-//         //             responseString = "not a Id, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //     }
+            if (parts.Length == 4 && int.TryParse(parts[3], out int id))
+            {
+                var verifiedUser = await TokenVerification.TokenVerify(request); // Token verification
+                if (verifiedUser == null)
+                {
+                    responseString = "Unauthorized access, wrong or empty token, please refer to the admin for a valid key";
+                }
+                else
+                {
+                    try
+                    {
+                        var options = new JsonSerializerOptions { WriteIndented = true }; // jolie JSON
+                        responseString = JsonSerializer.Serialize(await HttpDelUserById(id), options);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle the error
+                        responseString = $"Error deleting user: {ex.Message}, Error = " + (int)HttpStatusCode.InternalServerError;
+                    }
+                }
+            }
+            else if (parts.Length > 4)
+            {
+                responseString = "Bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+            else if (request.Url.PathAndQuery == "/api/users/")
+            {
+                responseString = "Enter an ID please, bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                responseString = "Not an ID, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+        }
 
-//         //     // HTTP PATCH
+
+            // HTTP PATCH
 
 
-//         //     else if (request.HttpMethod == "PATCH" && request.Url.PathAndQuery.StartsWith("/api/users/"))
-//         //     {
-//         //         string[] strings = request.Url.PathAndQuery.Split('/');
-//         //         string[] parts = strings; // sépare notre URL sur les "/"
-//         //         if (parts.Length == 4 && int.TryParse(parts[3], out int id))
-//         //         {
+        else if (request.HttpMethod == "PATCH" && request.Url.PathAndQuery.StartsWith("/api/users/"))
+        {
+            string[] strings = request.Url.PathAndQuery.Split('/');
+            string[] parts = strings; // Separate the URL by "/"
 
-//         //             try
-//         //             {
-//         //             using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-//         //             {
-//         //                 string requestBody = reader.ReadToEnd(); // permet de lire le body de la requete postman json
-//         //                 var data = JsonSerializer.Deserialize<Users>(requestBody); //ici data accede au body
-                        
-//         //                 string firstName = data.User_FirstName;
-//         //                 string lastName = data.User_LastName;
-//         //                 string email = data.User_Email;
-//         //                 string password = data.User_Password;
-//         //                 string phone = data.User_Phone;
+            if (parts.Length == 4 && int.TryParse(parts[3], out int id))
+            {
+                var verifiedUser = await TokenVerification.TokenVerify(request); // Token verification
+                if (verifiedUser == null)
+                {
+                    responseString = "Unauthorized access, wrong or empty token, please refer to the admin for a valid key";
+                }
+                else
+                {
+                    try
+                    {
+                        using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                        {
+                            string requestBody = await reader.ReadToEndAsync(); // Read the request body
+                            var data = JsonSerializer.Deserialize<Users>(requestBody); // Deserialize the JSON body into a Users object
+                            
+                            string firstName = data.User_FirstName;
+                            string lastName = data.User_LastName;
+                            string email = data.User_Email;
+                            string password = data.User_Password;
+                            string phone = data.User_Phone;
 
-//         //                 if (firstName == null && lastName == null && email == null && password == null && phone == null)
-//         //                 {
-//         //                     responseString = "bad body";
-//         //                 }
-//         //                 else
-//         //                 {
-//         //                     var options = new JsonSerializerOptions { WriteIndented = true };
-//         //                     responseString = JsonSerializer.Serialize(await HttpPatchUserById(id, firstName, lastName, email, password, phone), options);
-//         //                 }
-//         //             }
-//         //             }
-//         //             catch (Exception ex)
-//         //             {
-//         //                 // Gérer l'erreur
-//         //                 return $"no or bad body send: {ex.Message}";
-//         //             }
-//         //         }
-//         //         else if (parts.Length > 4)
-//         //         {
-//         //             responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else if (request.Url.PathAndQuery == "/api/users/")
-//         //         {
-//         //             responseString = "enter an id please, bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else
-//         //         {
-//         //             responseString = "not an Id, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //     }
+                            if (firstName == null && lastName == null && email == null && password == null && phone == null)
+                            {
+                                responseString = "Bad body, Error = " + (int)HttpStatusCode.BadRequest;
+                            }
+                            else
+                            {
+                                var options = new JsonSerializerOptions { WriteIndented = true };
+                                responseString = JsonSerializer.Serialize(await HttpPatchUserById(id, firstName, lastName, email, password, phone), options);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle the error
+                        responseString = $"No or bad body sent: {ex.Message}, Error = " + (int)HttpStatusCode.InternalServerError;
+                    }
+                }
+            }
+            else if (parts.Length > 4)
+            {
+                responseString = "Bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+            else if (request.Url.PathAndQuery == "/api/users/")
+            {
+                responseString = "Enter an ID please, bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                responseString = "Not an ID, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+        }
 
-//         //     //final return
-              return responseString;
-          }
+
+    //final return
+        return responseString;
+    }
 
 
 
@@ -684,75 +710,75 @@ namespace Controllers
 
 
 
-//         private async Task<string> HttpPatchUserById(int id, string firstName, string lastName, string email, string password, string phone)
-//         {
-//             try
-//             {
-//                 using (MySqlConnection connection = new MySqlConnection(connectionString))
-//                 {
-//                     await connection.OpenAsync();
+        private async Task<string> HttpPatchUserById(int id, string firstName, string lastName, string email, string password, string phone)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//                     // cette requete permet de mettre a jour seulement les champs non vide
-//                     string SqlRequest = "UPDATE users SET ";
+                    // cette requete permet de mettre a jour seulement les champs non vide
+                    string SqlRequest = "UPDATE users SET ";
 
-//                     List<string> updates = new List<string>();
+                    List<string> updates = new List<string>();
 
-//                     if (!string.IsNullOrEmpty(firstName))
-//                     {
-//                         updates.Add("User_FirstName = @FirstName");
-//                     }
-//                     if (!string.IsNullOrEmpty(lastName))
-//                     {
-//                         updates.Add("User_LastName = @LastName");
-//                     }
-//                     if (!string.IsNullOrEmpty(email))
-//                     {
-//                         updates.Add("User_Email = @Email");
-//                     }
-//                     if (!string.IsNullOrEmpty(password))
-//                     {
-//                         updates.Add("User_Password = @Password");
-//                     }
-//                     if (!string.IsNullOrEmpty(phone))
-//                     {
-//                         updates.Add("User_Phone = @Phone");
-//                     }
+                    if (!string.IsNullOrEmpty(firstName))
+                    {
+                        updates.Add("User_FirstName = @FirstName");
+                    }
+                    if (!string.IsNullOrEmpty(lastName))
+                    {
+                        updates.Add("User_LastName = @LastName");
+                    }
+                    if (!string.IsNullOrEmpty(email))
+                    {
+                        updates.Add("User_Email = @Email");
+                    }
+                    if (!string.IsNullOrEmpty(password))
+                    {
+                        updates.Add("User_Password = @Password");
+                    }
+                    if (!string.IsNullOrEmpty(phone))
+                    {
+                        updates.Add("User_Phone = @Phone");
+                    }
 
-//                     SqlRequest += string.Join(", ", updates);
-//                     SqlRequest += " WHERE User_Id = @UserId";
+                    SqlRequest += string.Join(", ", updates);
+                    SqlRequest += " WHERE User_Id = @UserId";
 
-//                     //ici on fait des collages pour avoir notre requete sql
+                    //ici on fait des collages pour avoir notre requete sql
 
-//                     Console.WriteLine(SqlRequest);
+                    Console.WriteLine(SqlRequest);
 
-//                     using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                     {
-//                         command.Parameters.AddWithValue("@UserId", id);
-//                         command.Parameters.AddWithValue("@FirstName", firstName);
-//                         command.Parameters.AddWithValue("@LastName", lastName);
-//                         command.Parameters.AddWithValue("@Email", email);
-//                         command.Parameters.AddWithValue("@Password", password);
-//                         command.Parameters.AddWithValue("@Phone", phone);
+                    using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
+                        command.Parameters.AddWithValue("@FirstName", firstName);
+                        command.Parameters.AddWithValue("@LastName", lastName);
+                        command.Parameters.AddWithValue("@Email", email);
+                        command.Parameters.AddWithValue("@Password", password);
+                        command.Parameters.AddWithValue("@Phone", phone);
 
-//                         int rowsAffected = await command.ExecuteNonQueryAsync();
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
 
-//                         if (rowsAffected > 0)
-//                         {
-//                             return "Patch success! User updated!";
-//                         }
-//                         else
-//                         {
-//                             return "Invalid id or no rows affected.";
-//                         }
-//                     }
-//                 }
-//             }
-//             catch (Exception ex)
-//             {
-//                 // Gérer l'erreur
-//                 return $"Error during PATCH: {ex.Message}";
-//             }
-//         }
+                        if (rowsAffected > 0)
+                        {
+                            return "Patch success! User updated!";
+                        }
+                        else
+                        {
+                            return "Invalid id or no rows affected.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Gérer l'erreur
+                return $"Error during PATCH: {ex.Message}";
+            }
+        }
 
 
         private async Task<string> HttpPostNewUser(string firstName, string lastName, string email, string password, string phone)
@@ -1120,43 +1146,40 @@ namespace Controllers
 
 
 
+        private async Task<string> HttpDelUserById(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//         private async Task<string> HttpDelUserById(int id)
-//         {
+                    string sqlRequest = "DELETE FROM users WHERE User_Id = @Id";
+                    
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
 
-//             try
-//             {
-//                 using (MySqlConnection connection = new MySqlConnection(connectionString))
-//                 {
-//                     await connection.OpenAsync();
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
 
-//                     string SqlRequest = "DELETE FROM users WHERE User_Id = @UserId"; // ma query SQL
-
-//                     using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                     {
-//                         command.Parameters.AddWithValue("@UserId", id); 
-//                         // permet d'envoyé des données dans la query par un @ en C#
-
-//                         int rowsAffected = await command.ExecuteNonQueryAsync();
-
-//                         if (rowsAffected > 0)
-//                         {
-//                             return "Its work! User supprimer! ";
-//                         }
-//                         else
-//                         {
-//                             return "Invalid id, Error =  " + (int)HttpStatusCode.BadRequest;
-//                         }
-//                     }
-//                 }
-//             }
-//             catch (Exception ex)
-//             {
-//                 // gestion de l'erreur
-//                 return $"Error during DEL: {ex.Message}";
-//             }
-//         }
-
+                        if (rowsAffected > 0)
+                        {
+                            return "User successfully deleted, Status = " + (int)HttpStatusCode.OK;
+                        }
+                        else
+                        {
+                            return "Failed to delete user, Error = " + (int)HttpStatusCode.NotFound;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during user deletion: {ex.Message}");
+                return "Error during user deletion: " + ex.Message;
+            }
+        }
 
 
 
