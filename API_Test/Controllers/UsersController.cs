@@ -23,11 +23,14 @@ namespace Controllers
         {
             string responseString = "";
 
+
+            // GET
+
             if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/users")
             {
                 var options = new JsonSerializerOptions { WriteIndented = true };
 
-                // var verifiedUser = await TokenVerification.TokenVerify(request);
+                // var verifiedUser = await TokenVerification.TokenVerify(request); //TOKEN TCHEK
                 // if (verifiedUser == null)
                 // {
                 //     responseString = "Unauthorized access, wrong or empty token, please refer to the admin for obtain a valid key";
@@ -35,7 +38,10 @@ namespace Controllers
                 // else
                 // {
                 responseString = JsonSerializer.Serialize(await HttpGetAllUsers(), options);
+                // }
             }
+
+            // GET all user
         
             else if (request.HttpMethod == "GET" && request.Url.PathAndQuery.StartsWith("/api/users/"))
             {
@@ -52,12 +58,12 @@ namespace Controllers
 
                 }
 
-                // TODO:
+                // GET comments by user id
 
                 else if (parts.Length == 5 && parts[4] == "comments" && int.TryParse(parts[3], out int myId))
                 {
                     var options = new JsonSerializerOptions { WriteIndented = true };
-                    var comments = await HttpGetCommentslistByUserId(myId);
+                    var comments = await HttpGetCommentsByUserId(myId);
 
                     if (comments.Any())
                     {
@@ -69,7 +75,9 @@ namespace Controllers
                     }
                 }
 
-                // TODO:
+               // GET friendlists by user id
+
+
                 else if (parts.Length == 5 && parts[4] == "friendlists" && int.TryParse(parts[3], out int myotherId))
                 {
                     var options = new JsonSerializerOptions { WriteIndented = true };
@@ -85,8 +93,8 @@ namespace Controllers
                     }
                 }
                 
-
-                // TODO:
+                // GET likes by user id
+                
                 else if (parts.Length == 5 && parts[4] == "likes" && int.TryParse(parts[3], out int mythirdId))
                 {
                     var options = new JsonSerializerOptions { WriteIndented = true };
@@ -102,11 +110,13 @@ namespace Controllers
                     }
                 }
                 
-                // TODO:
-                else if (parts.Length == 5 && parts[4] == "maps" && int.TryParse(parts[3], out int mylastId))
+               // GET maps by user id
+
+
+                else if (parts.Length == 5 && parts[4] == "maps" && int.TryParse(parts[3], out int myquatreId))
                 {
                     var options = new JsonSerializerOptions { WriteIndented = true };
-                    var maps = await HttpGetMapsByUserId(mylastId);
+                    var maps = await HttpGetMapsByUserId(myquatreId);
 
                     if (maps.Any())
                     {
@@ -118,11 +128,12 @@ namespace Controllers
                     }
                 }
 
-                // TODO:
-                else if (parts.Length == 5 && parts[4] == "marks" && int.TryParse(parts[3], out int mylastId))
+                // GET marks by user id
+
+                else if (parts.Length == 5 && parts[4] == "marks" && int.TryParse(parts[3], out int mycinqId))
                 {
                     var options = new JsonSerializerOptions { WriteIndented = true };
-                    var marks = await HttpGetMarksByUserId(mylastId);
+                    var marks = await HttpGetMarksByUserId(mycinqId);
 
                     if (marks.Any())
                     {
@@ -134,7 +145,9 @@ namespace Controllers
                     }
                 }
 
-                // TODO:
+
+                // GET routes by user id
+
                 else if (parts.Length == 5 && parts[4] == "routes" && int.TryParse(parts[3], out int mylastId))
                 {
                     var options = new JsonSerializerOptions { WriteIndented = true };
@@ -162,6 +175,10 @@ namespace Controllers
                 {
                     string myEndPointString = parts[3];
 
+
+                // GET user by email
+
+
                     if (myEndPointString.Contains("@"))
                     {
                         var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
@@ -174,6 +191,10 @@ namespace Controllers
                     } 
                     else
                     {
+
+                // GET user by LastName
+                
+                        
                         var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
                         responseString = JsonSerializer.Serialize(await HttpGetUserByLastName(myEndPointString), options);
                         
@@ -346,6 +367,247 @@ namespace Controllers
 
 
 
+
+
+
+        private async Task<IEnumerable<Friendlist>> HttpGetFriendlistsByUserId(int id)
+        {
+            List<Friendlist> friendlists = new List<Friendlist>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "SELECT * FROM friendlists WHERE User_Main_Id = @UserId"; 
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
+
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Friendlist friendlist = new Friendlist
+                                {
+                                    User_Main_Id = Convert.ToInt32(reader["User_Main_Id"]),
+                                    User_Id = Convert.ToInt32(reader["User_Id"])
+                                };
+                                friendlists.Add(friendlist);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during friendlist retrieval: {ex.Message}");
+            }
+
+            return friendlists;
+        }
+
+
+
+
+
+        private async Task<IEnumerable<Likes>> HttpGetLikesByUserId(int id)
+        {
+            List<Likes> likes = new List<Likes>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "SELECT * FROM likes WHERE User_Id = @UserId"; 
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
+
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Likes like = new Likes
+                                {
+                                    User_Id = Convert.ToInt32(reader["User_Id"]),
+                                    Map_Id = Convert.ToInt32(reader["Map_Id"])
+                                };
+                                likes.Add(like);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during likes retrieval: {ex.Message}");
+            }
+
+            return likes;
+        }
+
+
+
+
+
+
+
+        private async Task<IEnumerable<Maps>> HttpGetMapsByUserId(int id)
+        {
+            List<Maps> maps = new List<Maps>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "SELECT * FROM maps WHERE User_Id = @UserId"; 
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
+
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Maps map = new Maps
+                                {
+                                    Map_Id = Convert.ToInt32(reader["Map_Id"]),
+                                    User_Id = Convert.ToInt32(reader["User_Id"]),
+                                    Map_Name = reader["Map_Name"].ToString(),
+                                    Map_Description = reader["Map_Description"].ToString(),
+                                    Map_LikeNumber = reader["Map_LikeNumber"] != DBNull.Value ? (int?)Convert.ToInt32(reader["Map_LikeNumber"]) : null,
+                                    Map_NumberCommentary = reader["Map_NumberCommentary"] != DBNull.Value ? (int?)Convert.ToInt32(reader["Map_NumberCommentary"]) : null,
+                                    Map_TravelTime = reader["Map_TravelTime"] != DBNull.Value ? (float?)Convert.ToSingle(reader["Map_TravelTime"]) : null,
+                                    Map_TotalDistance = reader["Map_TotalDistance"] != DBNull.Value ? (float?)Convert.ToSingle(reader["Map_TotalDistance"]) : null,
+                                    Map_Image = reader["Map_Image"].ToString(),
+                                    Map_Rating = reader["Map_Rating"] != DBNull.Value ? (int?)Convert.ToInt32(reader["Map_Rating"]) : null
+                                };
+                                maps.Add(map);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during maps retrieval: {ex.Message}");
+            }
+
+            return maps;
+        }
+
+
+
+
+
+
+        private async Task<IEnumerable<Marks>> HttpGetMarksByUserId(int id)
+        {
+            List<Marks> marks = new List<Marks>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "SELECT * FROM marks WHERE Map_Id IN (SELECT Map_Id FROM maps WHERE User_Id = @UserId)"; 
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
+
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Marks mark = new Marks
+                                {
+                                    Mark_Id = Convert.ToInt32(reader["Mark_Id"]),
+                                    Map_Id = Convert.ToInt32(reader["Map_Id"]),
+                                    Mark_Description = reader["Mark_Description"].ToString(),
+                                    Mark_Name = reader["Mark_Name"].ToString(),
+                                    Mark_Latitude = Convert.ToSingle(reader["Mark_Latitude"]),
+                                    Mark_Longitude = Convert.ToSingle(reader["Mark_Longitude"])
+                                };
+                                marks.Add(mark);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during marks retrieval: {ex.Message}");
+            }
+
+            return marks;
+        }
+
+
+
+
+
+        private async Task<IEnumerable<Routes>> HttpGetRoutesByUserId(int id)
+        {
+            List<Routes> routes = new List<Routes>();
+
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "SELECT * FROM routes WHERE Mark_Start IN (SELECT Mark_Id FROM marks WHERE Map_Id IN (SELECT Map_Id FROM maps WHERE User_Id = @UserId))"; 
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
+
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Routes route = new Routes
+                                {
+                                    Route_Id = Convert.ToInt32(reader["Route_Id"]),
+                                    Mark_Start = Convert.ToInt32(reader["Mark_Start"]),
+                                    Mark_End = Convert.ToInt32(reader["Mark_End"]),
+                                    Route_Name = reader["Route_Name"].ToString(),
+                                    Route_Description = reader["Route_Description"].ToString(),
+                                    Route_Distance = reader["Route_Distance"] != DBNull.Value ? (float?)Convert.ToSingle(reader["Route_Distance"]) : null
+                                };
+                                routes.Add(route);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during routes retrieval: {ex.Message}");
+            }
+
+            return routes;
+        }
+
+
+
+
 //         private async Task<string> HttpPatchUserById(int id, string firstName, string lastName, string email, string password, string phone)
 //         {
 //             try
@@ -496,102 +758,52 @@ namespace Controllers
         }
 
 
-//         private async Task<string> HttpPutUserById(int id, string firstName, string lastName, string email, string password, string phone)
-//         {
-//             //Put = Update, ou crée si existe pas
 
-//             try
-//             {
+       private async Task<IEnumerable<Comments>> HttpGetCommentsByUserId(int id)
+        {
+            List<Comments> comments = new List<Comments>();
 
-//              string result = await Task.Run(async () =>
-//             {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//                 using (MySqlConnection connection = new MySqlConnection(connectionString))
-//                 {
-//                     await connection.OpenAsync();
+                    string sqlRequest = "SELECT * FROM comments WHERE User_Id = @UserId"; 
+                    // permet d'envoyé des données dans la query par un @ en C#
 
-//                     string SqlRequest = "UPDATE users SET User_FirstName = @FirstName, User_LastName = @LastName, User_Email = @Email, User_Password = @Password, User_Phone = @Phone WHERE User_Id = @UserId"; // ma query SQL
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", id);
 
-//                     using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                     {
-//                         command.Parameters.AddWithValue("@UserId", id);
-//                         command.Parameters.AddWithValue("@FirstName", firstName);
-//                         command.Parameters.AddWithValue("@LastName", lastName);
-//                         command.Parameters.AddWithValue("@Email", email); 
-//                         command.Parameters.AddWithValue("@Password", password);
-//                         command.Parameters.AddWithValue("@Phone", phone);
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Comments comment = new Comments
+                                {
+                                    Comment_Id = Convert.ToInt32(reader["Comment_Id"]),
+                                    User_Id = Convert.ToInt32(reader["User_Id"]),
+                                    Map_Id = Convert.ToInt32(reader["Map_Id"]),
+                                    Comment_Content = reader["Comment_Content"].ToString(),
+                                    Comment_Date = reader["Comment_Date"].ToString()
+                                };
+                                comments.Add(comment);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during comments retrieval: {ex.Message}");
+            }
 
-//                         // permet d'envoyé des données dans la query par un @ en C#
+            return comments;
+        }
+    
 
-//                     int rowsAffected = await command.ExecuteNonQueryAsync();
-
-//                             if (rowsAffected > 0)
-//                             {
-//                         return "Its work! User mis a jour! ";
-//                             }
-//                             else
-//                             {
-//                                 //cree un user sur le haut de la liste si aucun id atribué
-//                                 await HttpPostNewUser(firstName, lastName, email, password, phone);
-//                                 return "This Id is empty, New User created";
-//                             }
-//                         }
-//                     }
-//                 });
-
-//             return result;
-
-//             }
-//             catch (Exception ex)
-//             {
-//                 // gestion de l'erreur
-//                 return $"Error during PUT: {ex.Message}";
-//             }
-//         }
-
-
-//         private async Task<IEnumerable<Shoplists>> HttpGetShoplistByUserId(int id)
-//         {
-        
-//         List<Shoplists> shoplists = new List<Shoplists>();
-
-//             try
-//             {
-
-//                 using (MySqlConnection connection = new MySqlConnection(connectionString))
-//                 {
-//                     await connection.OpenAsync();
-
-//                     string SqlRequest = "SELECT * FROM shoplists WHERE User_Id = @UserId"; // ma query SQL
-
-//                     using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                     {
-//                         command.Parameters.AddWithValue("@UserId", id); 
-//                         // permet d'envoyé des données dans la query par un @ en C#
-
-//                         using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-//                         {
-//                             while (await reader.ReadAsync())
-//                             {
-//                                 Shoplists shoplist = new Shoplists
-//                                 {
-//                                     Shoplist_Id = Convert.ToInt32(reader["Shoplist_Id"]),
-//                                     User_Id = Convert.ToInt32(reader["User_Id"])
-//                                 };
-//                                 shoplists.Add(shoplist);
-//                             }
-//                         }
-//                     }
-//                 }
-//             }
-//             catch (Exception ex)
-//             {
-//                 // Handle the exception
-//                 Console.WriteLine($"Error during shop list retrieval: {ex.Message}");
-//             }
-
-//         return shoplists;
-//         }
 
 //         private async Task<IEnumerable<Commands>> HttpGetCommandsByUserId(int userId)
 //         {
@@ -749,6 +961,9 @@ namespace Controllers
             return user;
         }
 
+
+
+
         private async Task<Users> HttpGetUserByLastName(string name)
         {
             
@@ -786,6 +1001,9 @@ namespace Controllers
             return user;
         }
 
+
+
+
         private async Task<Users> HttpGetUserByEmail(string email)
         {
             
@@ -822,6 +1040,10 @@ namespace Controllers
 
             return user;
         }
+
+
+
+
 
 //         private async Task<string> HttpDelUserById(int id)
 //         {
@@ -867,4 +1089,4 @@ namespace Controllers
 
     }
 
- }
+}
