@@ -1,6 +1,6 @@
 namespace Models
 {
-   public class Comments
+    public class Comments
     {
         public int Comment_Id { get; set; }
         public int User_Id { get; set; }
@@ -9,3 +9,4 @@ namespace Models
         public string Comment_Date { get; set; }
     }
 }
+

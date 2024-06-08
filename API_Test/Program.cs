@@ -56,10 +56,10 @@ class SimpleHttpServer
             responseString = await new Controllers.UsersController().ProcessRequest(request);
         }
 
-        // else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // tchek si l'url commence avec api/comments
-        // {
-        //     responseString = await new Controllers.CommentsController().ProcessRequest(request);
-        // }
+        else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // tchek si l'url commence avec api/comments
+        {
+            responseString = await new Controllers.CommentsController().ProcessRequest(request);
+        }
 
         // else if (request.Url.AbsolutePath.StartsWith("/api/friendlists")) // tchek si l'url commence avec api/friendlists
         // {
