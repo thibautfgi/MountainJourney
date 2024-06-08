@@ -193,8 +193,8 @@ namespace Controllers
                     {
 
                 // GET user by LastName
-                
-                        
+
+
                         var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
                         responseString = JsonSerializer.Serialize(await HttpGetUserByLastName(myEndPointString), options);
                         
@@ -209,77 +209,109 @@ namespace Controllers
                 }
             }
 
-//         //     // POST
+            // POST
 
 
-//         //     else if (request.HttpMethod == "POST" && request.Url.PathAndQuery == "/api/users")
-//         //     {
-//         //         using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-//         //         {
-//         //             string requestBody = reader.ReadToEnd(); // permet de lire le body de la requete postman json
-//         //             var data = JsonSerializer.Deserialize<Users>(requestBody); //ici data accede au body
+           else if (request.HttpMethod == "POST" && request.Url.PathAndQuery == "/api/users")
+            {
+                using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                {
+                    string requestBody = await reader.ReadToEndAsync(); // asynchronously
+                    var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true }; 
+                    var data = JsonSerializer.Deserialize<Users>(requestBody, options); // Deserialize the request body into a Users object
 
-//         //             string firstName = data.User_FirstName;
-//         //             string lastName = data.User_LastName;
-//         //             string email = data.User_Email;
-//         //             string password = data.User_Password;
-//         //             string phone = data.User_Phone;
+                    if (data == null)
+                    {
+                        responseString = "Invalid user data, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                    else
+                    {
+                        string firstName = data.User_FirstName;
+                        string lastName = data.User_LastName;
+                        string email = data.User_Email;
+                        string password = data.User_Password;
+                        string phone = data.User_Phone;
 
-//         //             responseString = await HttpPostNewUser(firstName, lastName, email, password, phone);
-//         //         }
-//         //     }
-//         //     else if (request.HttpMethod == "POST" && request.Url.PathAndQuery.StartsWith("/api/users"))
-//         //     {
-//         //         responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //     }
+                        var verifiedUser = await TokenVerification.TokenVerify(request); // Token verification
+                        if (verifiedUser == null)
+                        {
+                            responseString = "Unauthorized access, wrong or empty token, please refer to the admin for a valid key";
+                        }
+                        else
+                        {
+                            responseString = await HttpPostNewUser(firstName, lastName, email, password, phone);
+                        }
+                    }
+                }
+            }
+            else if (request.HttpMethod == "POST" && request.Url.PathAndQuery.StartsWith("/api/users"))
+            {
+                responseString = "Bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
 
 
-//         //     //PUT
+        // PUT
 
-//         //     else if (request.HttpMethod == "PUT" && request.Url.PathAndQuery.StartsWith("/api/users/"))
-//         //     {
-//         //         string[] strings = request.Url.PathAndQuery.Split('/');
-//         //         string[] parts = strings; // separe notre url sur les "/"
-//         //         if (parts.Length == 4 && int.TryParse(parts[3], out int id))
-//         //         {
-//         //             try
-//         //             {
-//         //                 using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-//         //                 {
-//         //                     string requestBody = reader.ReadToEnd(); // permet de lire le body de la requete postman json
-//         //                     var data = JsonSerializer.Deserialize<Users>(requestBody); //ici data accede au body
 
-//         //                     string firstName = data.User_FirstName;
-//         //                     string lastName = data.User_LastName;
-//         //                     string email = data.User_Email;
-//         //                     string password = data.User_Password;
-//         //                     string phone = data.User_Phone;
+        else if (request.HttpMethod == "PUT" && request.Url.PathAndQuery.StartsWith("/api/users/"))
+        {
+            string[] strings = request.Url.PathAndQuery.Split('/');
+            string[] parts = strings; // Separate the URL by "/"
 
-                            
-//         //                     var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-//         //                     responseString = JsonSerializer.Serialize(await HttpPutUserById(id, firstName, lastName, email, password, phone), options);
-//         //                 }
-//         //             }
-//         //             catch (Exception ex)
-//         //             {
-//         //                 // Gérer l'erreur
-//         //                 return $"no or bad body send: {ex.Message}";
-//         //             }
-                    
-//         //         }
-//         //         else if (parts.Length > 4)
-//         //         {
-//         //             responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else if (request.Url.PathAndQuery == "/api/users/")
-//         //         {
-//         //             responseString = "enter a id please, bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //         else
-//         //         {
-//         //             responseString = "not a Id, Error =  " + (int)HttpStatusCode.BadRequest;
-//         //         }
-//         //     }
+            if (parts.Length == 4 && int.TryParse(parts[3], out int id))
+            {
+                var verifiedUser = await TokenVerification.TokenVerify(request); // Token verification
+                if (verifiedUser == null)
+                {
+                    responseString = "Unauthorized access, wrong or empty token, please refer to the admin for a valid key";
+                }
+                else
+                {
+                    try
+                    {
+                        using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                        {
+                            string requestBody = await reader.ReadToEndAsync(); // Read the request body asynchronously
+                            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true, WriteIndented = true }; // Ignore case and prettify JSON
+                            var data = JsonSerializer.Deserialize<Users>(requestBody, options); // Deserialize the request body into a Users object
+
+                            if (data == null)
+                            {
+                                responseString = "Invalid user data, Error = " + (int)HttpStatusCode.BadRequest;
+                            }
+                            else
+                            {
+                                string firstName = data.User_FirstName;
+                                string lastName = data.User_LastName;
+                                string email = data.User_Email;
+                                string password = data.User_Password;
+                                string phone = data.User_Phone;
+
+                                responseString = JsonSerializer.Serialize(await HttpPutUserById(id, firstName, lastName, email, password, phone), options);
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        // Handle the error
+                        responseString = $"No or bad body sent: {ex.Message}, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+            }
+            else if (parts.Length > 4)
+            {
+                responseString = "Bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+            else if (request.Url.PathAndQuery == "/api/users/")
+            {
+                responseString = "Enter an ID please, bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+            else
+            {
+                responseString = "Not an ID, Error = " + (int)HttpStatusCode.BadRequest;
+            }
+        }
+
 
 //         //     //DELETE
 
@@ -364,6 +396,50 @@ namespace Controllers
 //         //     //final return
               return responseString;
           }
+
+
+
+
+        private async Task<string> HttpPutUserById(int id, string firstName, string lastName, string email, string password, string phone)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "UPDATE users SET User_FirstName = @FirstName, User_LastName = @LastName, User_Email = @Email, User_Password = @Password, User_Phone = @Phone WHERE User_Id = @Id";
+                    
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@FirstName", firstName);
+                        command.Parameters.AddWithValue("@LastName", lastName);
+                        command.Parameters.AddWithValue("@Email", email);
+                        command.Parameters.AddWithValue("@Password", password); // Consider hashing the password before storing it
+                        command.Parameters.AddWithValue("@Phone", phone);
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+
+                        if (rowsAffected > 0)
+                        {
+                            return "User successfully updated, Status = " + (int)HttpStatusCode.OK;
+                        }
+                        else
+                        {
+                            return "Failed to update user, Error = " + (int)HttpStatusCode.InternalServerError;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during user update: {ex.Message}");
+                return "Error during user update: " + ex.Message;
+            }
+        }
+
 
 
 
@@ -679,44 +755,44 @@ namespace Controllers
 //         }
 
 
-//         private async Task<string> HttpPostNewUser(string firstName, string lastName, string email, string password, string phone)
-//         {
-//             // sur postman, faire la requete avec un body contenant les infos ci dessus
-//             try
-//             {
-//                 using (MySqlConnection connection = new MySqlConnection(connectionString))
-//                 {
-//                     await connection.OpenAsync();
+        private async Task<string> HttpPostNewUser(string firstName, string lastName, string email, string password, string phone)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//                     string SqlRequest = "INSERT INTO users (User_FirstName, User_LastName, User_Email, User_Password, User_Phone) VALUES (@FirstName, @LastName, @Email, @Password, @Phone)";
+                    string sqlRequest = "INSERT INTO users (User_FirstName, User_LastName, User_Email, User_Password, User_Phone) VALUES (@FirstName, @LastName, @Email, @Password, @Phone)";
+                    
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@FirstName", firstName);
+                        command.Parameters.AddWithValue("@LastName", lastName);
+                        command.Parameters.AddWithValue("@Email", email);
+                        command.Parameters.AddWithValue("@Password", password); // Consider hashing the password before storing it
+                        command.Parameters.AddWithValue("@Phone", phone);
 
-//                     using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                     { // lie les @ a une string
-//                         command.Parameters.AddWithValue("@FirstName", firstName);
-//                         command.Parameters.AddWithValue("@LastName", lastName);
-//                         command.Parameters.AddWithValue("@Email", email);
-//                         command.Parameters.AddWithValue("@Password", password);
-//                         command.Parameters.AddWithValue("@Phone", phone);
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
 
-//                         int rowsAffected = await command.ExecuteNonQueryAsync();
-
-//                         if (rowsAffected > 0)
-//                         {
-//                             return "Its work! Post effectué! ";
-//                         }
-//                         else
-//                         {
-//                             return "Post failled, no row creat";
-//                         }
-//                     }
-//                 }
-//             }
-//             catch (Exception ex)
-//             {
-//                 // gestion de l'erreur
-//                 return $"Error during post: {ex.Message}";
-//             }
-//         }
+                        if (rowsAffected > 0)
+                        {
+                            return "User successfully created, Status = " + (int)HttpStatusCode.Created;
+                        }
+                        else
+                        {
+                            return "Failed to create user, Error = " + (int)HttpStatusCode.InternalServerError;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception
+                Console.WriteLine($"Error during user creation: {ex.Message}");
+                return "Error during user creation: " + ex.Message;
+            }
+        }
 
 
 //         // HttpPostNewUserWithId si on veux cree sur un Id specifique

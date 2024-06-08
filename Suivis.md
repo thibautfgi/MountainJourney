@@ -7,6 +7,8 @@ ajout de fake data et test des delete en cascade afin de verifier si tt les rela
 mise en place model api
 controller api
 ajout d'une fonctionnalite de test de connection a la db dans l'api
+mise en place token api
+mise en place user controller
 
 
 
