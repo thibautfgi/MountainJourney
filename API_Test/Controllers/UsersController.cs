@@ -30,15 +30,8 @@ namespace Controllers
             {
                 var options = new JsonSerializerOptions { WriteIndented = true };
 
-                // var verifiedUser = await TokenVerification.TokenVerify(request); //TOKEN TCHEK
-                // if (verifiedUser == null)
-                // {
-                //     responseString = "Unauthorized access, wrong or empty token, please refer to the admin for obtain a valid key";
-                // }
-                // else
-                // {
+
                 responseString = JsonSerializer.Serialize(await HttpGetAllUsers(), options);
-                // }
             }
 
             // GET all user

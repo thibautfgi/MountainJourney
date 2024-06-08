@@ -1,11 +1,12 @@
+using Microsoft.VisualBasic;
 using Models;
 using MySqlConnector;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
+using Tools;
 
 namespace Controllers
 {
@@ -16,6 +17,17 @@ namespace Controllers
         public async Task<string> ProcessRequest(HttpListenerRequest request)
         {
             string responseString = "";
+
+            // Token verification for POST, PUT, PATCH, and DELETE methods
+            if (request.HttpMethod == "POST" || request.HttpMethod == "PUT" || request.HttpMethod == "PATCH" || request.HttpMethod == "DELETE")
+            {
+                var verifiedUser = await TokenVerification.TokenVerify(request);
+                if (verifiedUser == null)
+                {
+                    responseString = "Unauthorized access, wrong or empty token, please refer to the admin for a valid key";
+                    return responseString;
+                }
+            }
 
             // GET all comments
             if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/comments")
@@ -57,7 +69,26 @@ namespace Controllers
                     responseString = result;
                 }
             }
-            // PUT - Not implemented
+            // PUT
+            else if (request.HttpMethod == "PUT" && request.Url.PathAndQuery.StartsWith("/api/comments/"))
+            {
+                string[] parts = request.Url.PathAndQuery.Split('/');
+                if (parts.Length == 4 && int.TryParse(parts[3], out int commentId))
+                {
+                    using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                    {
+                        string requestBody = await reader.ReadToEndAsync();
+                        var data = JsonSerializer.Deserialize<Comments>(requestBody);
+
+                        string result = await HttpPutCommentById(commentId, data.User_Id, data.Map_Id, data.Comment_Content, data.Comment_Date);
+                        responseString = result;
+                    }
+                }
+                else
+                {
+                    responseString = "Invalid comment ID, Error = " + (int)HttpStatusCode.BadRequest;
+                }
+            }
             // PATCH
             else if (request.HttpMethod == "PATCH" && request.Url.PathAndQuery.StartsWith("/api/comments/"))
             {
@@ -95,6 +126,9 @@ namespace Controllers
 
             return responseString;
         }
+
+
+
 
         private async Task<IEnumerable<Comments>> HttpGetAllComments()
         {
@@ -204,6 +238,42 @@ namespace Controllers
             }
 
             return "Comment created successfully";
+        }
+
+               private async Task<string> HttpPutCommentById(int commentId, int userId, int mapId, string content, string date)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "UPDATE comments SET User_Id = @UserId, Map_Id = @MapId, Comment_Content = @Content, Comment_Date = @Date WHERE Comment_Id = @CommentId";
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        command.Parameters.AddWithValue("@MapId", mapId);
+                        command.Parameters.AddWithValue("@Content", content);
+                        command.Parameters.AddWithValue("@Date", date);
+                        command.Parameters.AddWithValue("@CommentId", commentId);
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        if (rowsAffected > 0)
+                        {
+                            return "Comment updated successfully";
+                        }
+                        else
+                        {
+                            return "Invalid id or no rows affected.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error during comment update: {ex.Message}";
+            }
         }
 
         private async Task<string> HttpPatchCommentById(int commentId, int userId, int mapId, string content, string date)
