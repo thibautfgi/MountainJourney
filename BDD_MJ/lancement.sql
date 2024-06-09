@@ -148,9 +148,10 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `likes`;
 
 CREATE TABLE `likes` (
+    Like_Id int NOT NULL AUTO_INCREMENT,
     User_Id INTEGER NOT NULL,
     Map_Id INTEGER NOT NULL,
-    PRIMARY KEY (User_Id, Map_Id),
+    PRIMARY KEY (`Like_Id`),
     FOREIGN KEY (User_Id) REFERENCES users(User_Id)
         ON DELETE CASCADE,
     FOREIGN KEY (Map_Id) REFERENCES maps(Map_Id)
@@ -215,9 +216,10 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `friendlists`;
 
 CREATE TABLE friendlists (
+    Friendlist_Id int NOT NULL AUTO_INCREMENT,
     User_Main_Id INTEGER NOT NULL,
     User_Id INTEGER NOT NULL,
-    PRIMARY KEY (User_Main_Id, User_Id),
+    PRIMARY KEY (`Friendlist_Id`),
     FOREIGN KEY (User_Main_Id) REFERENCES users(User_Id)
         ON DELETE CASCADE,
     FOREIGN KEY (User_Id) REFERENCES users(User_Id)
@@ -271,13 +273,3 @@ VALUES
 (10, 'cdefgh567890');
 
 UNLOCK TABLES;
-
-
--- Création d'un utilisateur pour l'API avec des privilèges limités
-CREATE USER 'api'@'%' IDENTIFIED BY 'Prout123';
-
--- Accorder des privilèges de lecture et écriture sur toutes les tables
-GRANT SELECT, INSERT, UPDATE, DELETE ON MountainJourney.* TO 'api'@'%';
-
--- Appliquer les modifications
-FLUSH PRIVILEGES;
