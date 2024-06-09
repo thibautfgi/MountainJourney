@@ -465,9 +465,9 @@ namespace Controllers
 
 
 
-        private async Task<IEnumerable<Friendlist>> HttpGetFriendlistsByUserId(int id)
+        private async Task<IEnumerable<Friendlists>> HttpGetFriendlistsByUserId(int id)
         {
-            List<Friendlist> friendlists = new List<Friendlist>();
+            List<Friendlists> friendlists = new List<Friendlists>();
 
             try
             {
@@ -485,7 +485,7 @@ namespace Controllers
                         {
                             while (await reader.ReadAsync())
                             {
-                                Friendlist friendlist = new Friendlist
+                                Friendlists friendlist = new Friendlists
                                 {
                                     User_Main_Id = Convert.ToInt32(reader["User_Main_Id"]),
                                     User_Id = Convert.ToInt32(reader["User_Id"])
