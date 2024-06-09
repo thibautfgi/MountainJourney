@@ -76,10 +76,10 @@ class SimpleHttpServer
         //     responseString = await new Controllers.MapsController().ProcessRequest(request);
         // }
 
-        // else if (request.Url.AbsolutePath.StartsWith("/api/marks")) // tchek si l'url commence avec api/marks
-        // {
-        //     responseString = await new Controllers.MarksController().ProcessRequest(request);
-        // }
+        else if (request.Url.AbsolutePath.StartsWith("/api/marks")) // tchek si l'url commence avec api/marks
+        {
+            responseString = await new Controllers.MarksController().ProcessRequest(request);
+        }
 
 
         // else if (request.Url.AbsolutePath.StartsWith("/api/routes")) // tchek si l'url commence avec api/routes
