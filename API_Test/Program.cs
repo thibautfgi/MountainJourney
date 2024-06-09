@@ -82,10 +82,10 @@ class SimpleHttpServer
         }
 
 
-        // else if (request.Url.AbsolutePath.StartsWith("/api/routes")) // tchek si l'url commence avec api/routes
-        // {
-        //     responseString = await new Controllers.RoutesController().ProcessRequest(request);
-        // }
+        else if (request.Url.AbsolutePath.StartsWith("/api/routes")) // tchek si l'url commence avec api/routes
+        {
+            responseString = await new Controllers.RoutesController().ProcessRequest(request);
+        }
 
         else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // tchek si l'url commence avec api/tokens
         {
