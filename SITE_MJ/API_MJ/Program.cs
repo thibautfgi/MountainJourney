@@ -22,7 +22,7 @@ class SimpleHttpServer
     public async Task Start()
     {
         listener.Start();
-        Console.WriteLine("Server test started. Listening for requests...");
+        Console.WriteLine("Server MJ started. Listening for requests...");
         Console.WriteLine("http://localhost:8080/");
 
         while (true)
