@@ -57,16 +57,7 @@ namespace Controllers
                     responseString = "Enter an id please, bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
                 }
             }
-            
-                else if (parts.Length > 5)
-                {
-                    responseString = "bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
-                }
-                else if (request.Url.PathAndQuery == "/api/friendlists/user/")
-                {
-                    responseString = "Enter a last name please, bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
-                }
-            }
+
             // POST
             else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/friendlists")
             {

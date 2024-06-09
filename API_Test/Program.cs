@@ -66,10 +66,10 @@ class SimpleHttpServer
             responseString = await new Controllers.FriendlistsController().ProcessRequest(request);
         }
 
-        // else if (request.Url.AbsolutePath.StartsWith("/api/likes")) // tchek si l'url commence avec api/likes
-        // {
-        //     responseString = await new Controllers.LikesController().ProcessRequest(request);
-        // }
+        else if (request.Url.AbsolutePath.StartsWith("/api/likes")) // tchek si l'url commence avec api/likes
+        {
+            responseString = await new Controllers.LikesController().ProcessRequest(request);
+        }
 
         // else if (request.Url.AbsolutePath.StartsWith("/api/maps")) // tchek si l'url commence avec api/maps
         // {
