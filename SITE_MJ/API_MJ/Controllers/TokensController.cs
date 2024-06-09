@@ -1,158 +1,353 @@
+using Microsoft.VisualBasic;
+using Models;
+using MySqlConnector;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.Json;
+using Tools;
 
-// using Microsoft.VisualBasic;
-// using Models;
-// using MySqlConnector;
-// using System.Collections.Generic;
-// using System.Linq;
-// using System.Net;
-// using System.Text;
-// using System.Text.Json;
+namespace Controllers
+{
+    public class TokensController
+    {
+        private string connectionString = "Server=localhost;User ID=root;Password=azerty;Database=mj";
 
-// namespace Controllers
-// {
-//     public class TokensController
-//     {
-//          private string connectionString = "Server=172.16.238.3;User ID=api;Password=Prout123;Database=MountainJourney";
-//         // mes identifiants pour me connect a mon mysql workbench
+        public async Task<string> ProcessRequest(HttpListenerRequest request)
+        {
+            string responseString = "";
 
-// // TODO: 
-// // gener mieux la connection sql = 1 connection
+            // Token verification for all methods
+            var verifiedUser = await TokenVerification.TokenVerify(request);
+            if (verifiedUser == null)
+            {
+                responseString = "Unauthorized access, wrong or empty token, please refer to the admin for a valid key";
+                return responseString;
+            }
 
+            // GET all tokens
+            if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/tokens")
+            {
+                var options = new JsonSerializerOptions { WriteIndented = true };
+                responseString = JsonSerializer.Serialize(await HttpGetAllTokens(), options);
+            }
+            // GET token by id
+            else if (request.HttpMethod == "GET" && request.Url.PathAndQuery.StartsWith("/api/tokens/"))
+            {
+                string[] parts = request.Url.PathAndQuery.Split('/');
+                if (parts.Length == 4 && int.TryParse(parts[3], out int id))
+                {
+                    var options = new JsonSerializerOptions { WriteIndented = true };
+                    responseString = JsonSerializer.Serialize(await HttpGetTokenById(id), options);
+                    if (responseString == "null")
+                    {
+                        responseString = "Invalid id, Error = " + (int)HttpStatusCode.BadRequest;
+                    }
+                }
+                else if (parts.Length > 4)
+                {
+                    responseString = "Bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+                }
+                else if (request.Url.PathAndQuery == "/api/tokens/")
+                {
+                    responseString = "Enter an id please, bad endpoint, Error = " + (int)HttpStatusCode.BadRequest;
+                }
+            }
+            // POST
+            else if (request.HttpMethod == "POST" && request.Url.AbsolutePath == "/api/tokens")
+            {
+                using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                {
+                    string requestBody = await reader.ReadToEndAsync();
+                    var data = JsonSerializer.Deserialize<Tokens>(requestBody);
 
-//         public async Task<string> ProcessRequest(HttpListenerRequest request)
-//         {
-//             string responseString = "";
+                    string result = await HttpPostToken(data.User_Id, data.Token_Value);
+                    responseString = result;
+                }
+            }
+            // PUT
+            else if (request.HttpMethod == "PUT" && request.Url.PathAndQuery.StartsWith("/api/tokens/"))
+            {
+                string[] parts = request.Url.PathAndQuery.Split('/');
+                if (parts.Length == 4 && int.TryParse(parts[3], out int tokenId))
+                {
+                    using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                    {
+                        string requestBody = await reader.ReadToEndAsync();
+                        var data = JsonSerializer.Deserialize<Tokens>(requestBody);
 
-//             //GET
+                        string result = await HttpPutTokenById(tokenId, data.User_Id, data.Token_Value);
+                        responseString = result;
+                    }
+                }
+                else
+                {
+                    responseString = "Invalid token ID, Error = " + (int)HttpStatusCode.BadRequest;
+                }
+            }
+            // PATCH
+            else if (request.HttpMethod == "PATCH" && request.Url.PathAndQuery.StartsWith("/api/tokens/"))
+            {
+                string[] parts = request.Url.PathAndQuery.Split('/');
+                if (parts.Length == 4 && int.TryParse(parts[3], out int tokenId))
+                {
+                    using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
+                    {
+                        string requestBody = await reader.ReadToEndAsync();
+                        var data = JsonSerializer.Deserialize<Tokens>(requestBody);
 
-//             if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/tokens")
-//             {
-//                 var options = new JsonSerializerOptions { WriteIndented = true }; //cette ligne rend le json html jolie
-//                 responseString = JsonSerializer.Serialize(await UsersFromToken(request), options);
-//             }
-//             else if (request.HttpMethod == "GET" && request.Url.PathAndQuery.StartsWith("/api/users"))
-//             {
-//                 responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//             }
-            
-            
-//             // POST
+                        string result = await HttpPatchTokenById(tokenId, data.User_Id, data.Token_Value);
+                        responseString = result;
+                    }
+                }
+                else
+                {
+                    responseString = "Invalid token ID, Error = " + (int)HttpStatusCode.BadRequest;
+                }
+            }
+            // DELETE
+            else if (request.HttpMethod == "DELETE" && request.Url.PathAndQuery.StartsWith("/api/tokens/"))
+            {
+                string[] parts = request.Url.PathAndQuery.Split('/');
+                if (parts.Length == 4 && int.TryParse(parts[3], out int tokenId))
+                {
+                    string result = await HttpDelTokenById(tokenId);
+                    responseString = result;
+                }
+                else
+                {
+                    responseString = "Invalid token ID, Error = " + (int)HttpStatusCode.BadRequest;
+                }
+            }
 
-//             else if (request.HttpMethod == "POST" && request.Url.PathAndQuery == "/api/tokens")
-//             {
-//                 using (var reader = new StreamReader(request.InputStream, request.ContentEncoding))
-//                 {
-//                     string requestBody = reader.ReadToEnd(); // permet de lire le body de la requete postman json
-//                     var data = JsonSerializer.Deserialize<Tokens>(requestBody); //ici data accede au body
+            return responseString;
+        }
 
-//                     int userId = data.User_Id;
-//                     string tokenValue = data.Token_Value;
+        private async Task<IEnumerable<Tokens>> HttpGetAllTokens()
+        {
+            List<Tokens> tokens = new List<Tokens>();
 
-//                     responseString = await HttpPostNewToken(userId, tokenValue);
-//                 }
-//             }
-//             else if (request.HttpMethod == "POST" && request.Url.PathAndQuery.StartsWith("/api/users"))
-//             {
-//                 responseString = "bad endpoint, Error =  " + (int)HttpStatusCode.BadRequest;
-//             }
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//             //final return
-//             return responseString;
-//         }
+                    string sqlRequest = "SELECT * FROM tokens";
 
-//         private async Task<string> HttpPostNewToken(int userID, string tokenValue)
-//         {
-//             // sur postman, faire la requete avec un body contenant les infos ci dessus
-//             try
-//             {
-//                 using (MySqlConnection connection = new MySqlConnection(connectionString))
-//                 {
-//                     await connection.OpenAsync();
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                Tokens token = new Tokens
+                                {
+                                    Token_Id = Convert.ToInt32(reader["Token_Id"]),
+                                    User_Id = Convert.ToInt32(reader["User_Id"]),
+                                    Token_Value = reader["Token_Value"].ToString()
+                                };
+                                tokens.Add(token);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during tokens retrieval: {ex.Message}");
+            }
 
-//                     string SqlRequest = "INSERT INTO tokens (User_Id, Token_Value) VALUES (@UserId, @TokenValue)";
+            return tokens;
+        }
 
-//                     using (MySqlCommand command = new MySqlCommand(SqlRequest, connection))
-//                     { // lie les @ a une string
-//                         command.Parameters.AddWithValue("@UserId", userID);
-//                         command.Parameters.AddWithValue("@TokenValue", tokenValue);
+        private async Task<Tokens> HttpGetTokenById(int id)
+        {
+            Tokens token = null;
 
-//                         int rowsAffected = await command.ExecuteNonQueryAsync();
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//                         if (rowsAffected > 0)
-//                         {
-//                             return "Its work! Post effectué! ";
-//                         }
-//                         else
-//                         {
-//                             return "Post failled, no row creat";
-//                         }
-//                     }
-//                 }
-//             }
-//             catch (Exception ex)
-//             {
-//                 // gestion de l'erreur
-//                 return $"Error during post: {ex.Message}";
-//             }
-//         }
+                    string sqlRequest = "SELECT * FROM tokens WHERE Token_Id = @TokenId";
 
-//         private async Task<Users> UsersFromToken(HttpListenerRequest request)
-//         {
-//             Users user = null;
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@TokenId", id);
 
-//             // Extract the bearer token from the Authorization header
-//             string authorizationHeader = request.Headers["Authorization"];
-//             if (string.IsNullOrEmpty(authorizationHeader) || !authorizationHeader.StartsWith("Bearer "))
-//             {
-//                 return user;
-//             }
+                        using (MySqlDataReader reader = await command.ExecuteReaderAsync())
+                        {
+                            if (await reader.ReadAsync())
+                            {
+                                token = new Tokens
+                                {
+                                    Token_Id = Convert.ToInt32(reader["Token_Id"]),
+                                    User_Id = Convert.ToInt32(reader["User_Id"]),
+                                    Token_Value = reader["Token_Value"].ToString()
+                                };
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error during token retrieval: {ex.Message}");
+            }
 
-//             string token = authorizationHeader.Substring("Bearer ".Length);
+            return token;
+        }
 
-//             // Database query to retrieve user information
-//             using (MySqlConnection connection = new MySqlConnection(connectionString))
-//             {
-//                 await connection.OpenAsync();
+        private async Task<string> HttpPostToken(int userId, string tokenValue)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-//                 string sqlQuery = @"
-//                     SELECT u.*
-//                     FROM users u
-//                     JOIN tokens t ON u.User_Id = t.User_Id
-//                     WHERE t.Token_Value = @Token;
-//                 ";
+                    string sqlRequest = "INSERT INTO tokens (User_Id, Token_Value) VALUES (@UserId, @TokenValue)";
 
-//                 // cette query renvoie le user corespondant au token données
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        command.Parameters.AddWithValue("@TokenValue", tokenValue);
 
-//                 using (MySqlCommand command = new MySqlCommand(sqlQuery, connection))
-//                 {
-//                     command.Parameters.AddWithValue("@Token", token);
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error during token creation: {ex.Message}";
+            }
 
-//                     using (MySqlDataReader reader = await command.ExecuteReaderAsync())
-//                     {
-//                         if (await reader.ReadAsync())
-//                         {
-//                             user = new Users
-//                             {
-//                                 User_Id = Convert.ToInt32(reader["User_Id"]),
-//                                 User_FirstName = reader["User_FirstName"].ToString(),
-//                                 User_LastName = reader["User_LastName"].ToString(),
-//                                 User_Email = reader["User_Email"].ToString(),
-//                                 User_Password = reader["User_Password"].ToString(),
-//                                 User_Phone = reader["User_Phone"].ToString(),
-//                             };
-//                         }
-//                     }
-//                 }
-//             }
+            return "Token created successfully";
+        }
 
-//             // Return the user associated with the token
-//             return user;
-//         }
+        private async Task<string> HttpPutTokenById(int tokenId, int userId, string tokenValue)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
 
-        
-       
+                    string sqlRequest = "UPDATE tokens SET User_Id = @UserId, Token_Value = @TokenValue WHERE Token_Id = @TokenId";
 
-//     }
-// }
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserId", userId);
+                        command.Parameters.AddWithValue("@TokenValue", tokenValue);
+                        command.Parameters.AddWithValue("@TokenId", tokenId);
 
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        if (rowsAffected > 0)
+                        {
+                            return "Token updated successfully";
+                        }
+                        else
+                        {
+                            return "Invalid id or no rows affected.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error during token update: {ex.Message}";
+            }
+        }
 
+        private async Task<string> HttpPatchTokenById(int tokenId, int userId, string tokenValue)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    var updates = new List<string>();
+                    var parameters = new Dictionary<string, object>();
+
+                    if (userId != 0)
+                    {
+                        updates.Add("User_Id = @UserId");
+                        parameters["@UserId"] = userId;
+                    }
+
+                    if (!string.IsNullOrEmpty(tokenValue))
+                    {
+                        updates.Add("Token_Value = @TokenValue");
+                        parameters["@TokenValue"] = tokenValue;
+                    }
+
+                    if (updates.Count == 0)
+                    {
+                        return "No fields to update.";
+                    }
+
+                    string sqlRequest = "UPDATE tokens SET " + string.Join(", ", updates) + " WHERE Token_Id = @TokenId";
+                    parameters["@TokenId"] = tokenId;
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        foreach (var param in parameters)
+                        {
+                            command.Parameters.AddWithValue(param.Key, param.Value);
+                        }
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        if (rowsAffected > 0)
+                        {
+                            return "Token updated successfully";
+                        }
+                        else
+                        {
+                            return "Invalid id or no rows affected.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error during token patch update: {ex.Message}";
+            }
+        }
+
+        private async Task<string> HttpDelTokenById(int id)
+        {
+            try
+            {
+                using (MySqlConnection connection = new MySqlConnection(connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    string sqlRequest = "DELETE FROM tokens WHERE Token_Id = @TokenId";
+
+                    using (MySqlCommand command = new MySqlCommand(sqlRequest, connection))
+                    {
+                        command.Parameters.AddWithValue("@TokenId", id);
+
+                        int rowsAffected = await command.ExecuteNonQueryAsync();
+                        if (rowsAffected > 0)
+                        {
+                            return "Token deleted successfully";
+                        }
+                        else
+                        {
+                            return "Invalid id or no rows affected.";
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error during token deletion: {ex.Message}";
+            }
+        }
+    }
+}
