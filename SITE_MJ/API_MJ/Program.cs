@@ -46,52 +46,52 @@ class SimpleHttpServer
 
         string responseString = "";
 
-        if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/status")
+        // Add CORS headers policy thing that block api on web
+        response.AddHeader("Access-Control-Allow-Origin", "*");
+        response.AddHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.AddHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+        if (request.HttpMethod == "OPTIONS")
+        {
+            // Handle CORS preflight request
+            response.StatusCode = (int)HttpStatusCode.OK;
+        }
+        else if (request.HttpMethod == "GET" && request.Url.PathAndQuery == "/api/status")
         {
             responseString = await HttpTestConnectionDb();
         }
-
-                else if (request.Url.AbsolutePath.StartsWith("/api/users")) // tchek si l'url commence avec api/users
+        else if (request.Url.AbsolutePath.StartsWith("/api/users")) // Check if the URL starts with api/users
         {
             responseString = await new Controllers.UsersController().ProcessRequest(request);
         }
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // tchek si l'url commence avec api/comments
+        else if (request.Url.AbsolutePath.StartsWith("/api/comments")) // Check if the URL starts with api/comments
         {
             responseString = await new Controllers.CommentsController().ProcessRequest(request);
         }
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/friendlists")) // tchek si l'url commence avec api/friendlists
+        else if (request.Url.AbsolutePath.StartsWith("/api/friendlists")) // Check if the URL starts with api/friendlists
         {
             responseString = await new Controllers.FriendlistsController().ProcessRequest(request);
         }
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/likes")) // tchek si l'url commence avec api/likes
+        else if (request.Url.AbsolutePath.StartsWith("/api/likes")) // Check if the URL starts with api/likes
         {
             responseString = await new Controllers.LikesController().ProcessRequest(request);
         }
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/maps")) // tchek si l'url commence avec api/maps
+        else if (request.Url.AbsolutePath.StartsWith("/api/maps")) // Check if the URL starts with api/maps
         {
             responseString = await new Controllers.MapsController().ProcessRequest(request);
         }
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/marks")) // tchek si l'url commence avec api/marks
+        else if (request.Url.AbsolutePath.StartsWith("/api/marks")) // Check if the URL starts with api/marks
         {
             responseString = await new Controllers.MarksController().ProcessRequest(request);
         }
-
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/routes")) // tchek si l'url commence avec api/routes
+        else if (request.Url.AbsolutePath.StartsWith("/api/routes")) // Check if the URL starts with api/routes
         {
             responseString = await new Controllers.RoutesController().ProcessRequest(request);
         }
-
-        else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // tchek si l'url commence avec api/tokens
+        else if (request.Url.AbsolutePath.StartsWith("/api/tokens")) // Check if the URL starts with api/tokens
         {
             responseString = await new Controllers.TokensController().ProcessRequest(request);
         }
-
         else
         {
             responseString = "Invalid endpoint, Error = " + (int)HttpStatusCode.NotFound;
