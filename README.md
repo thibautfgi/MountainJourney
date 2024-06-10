@@ -1,8 +1,8 @@
+<h1 align="center">MountainJourney</h1>
+
 <p align="center">
   <img src="https://cdn.discordapp.com/attachments/1100470591720542250/1249750199627415688/logo.png?ex=66687012&is=66671e92&hm=92622a5520252717fb57dc4cc7f5bbb166a0784af67a61d5c811d63582ab7e49&" alt="MountainJourney Logo" width="200">
 </p>
-
-<h1 align="center">MountainJourney</h1>
 
 ## Description
 
@@ -19,7 +19,7 @@ MountainJourney est une application web pour gérer et afficher des informations
 Clonez le dépôt et naviguez dans le répertoire du projet :
 
 ```bash
-git clone <URL_DU_DEPOT>
+git clone <https://github.com/DuunKy/MontainJourney.git>
 cd MountainJourney
 
 
