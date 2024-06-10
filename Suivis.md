@@ -13,6 +13,7 @@ optimisation token api
 all controler n model
 test with postman
 doc api
+CORS (Cross-Origin Resource Sharing) policy try to fix
 
 
 
