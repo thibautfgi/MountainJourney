@@ -7,8 +7,6 @@ services:
     container_name: SITE-Mountain-Journey
     ports:
       - "8080:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Production
     networks:
       my_network:
         ipv4_address: 172.16.238.4
