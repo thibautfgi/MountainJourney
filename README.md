@@ -12,7 +12,7 @@ Postman here :
 https://blue-comet-541359.postman.co/workspace/Mountain-Journey~ef3aa6a7-6af4-474c-9a98-4e77433ef51b/overview
 
 
-OUR TOKEN HERE : 
+OUR API TOKEN HERE : 
 
 abcdef123456
 
