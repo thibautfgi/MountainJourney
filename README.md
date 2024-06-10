@@ -20,7 +20,7 @@ Clonez le dépôt et naviguez dans le répertoire du projet :
 
 ```bash
 git clone <https://github.com/DuunKy/MontainJourney.git>
-cd MountainJourney
+cd MontainJourney
 
 
 ``` 
