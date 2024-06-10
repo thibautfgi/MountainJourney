@@ -11,7 +11,7 @@ namespace Controllers
 {
     public class MapsController
     {
-        private string connectionString = "Server=localhost;User ID=root;Password=azerty;Database=mj";
+        private static string connectionString = "Server=172.16.238.3;User ID=api;Password=azerty;Database=MountainJourney";
 
         public async Task<string> ProcessRequest(HttpListenerRequest request)
         {

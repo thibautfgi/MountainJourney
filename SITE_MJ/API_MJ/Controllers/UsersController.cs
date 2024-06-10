@@ -13,7 +13,7 @@ namespace Controllers
 {
     public class UsersController
     {
-        private string connectionString = "Server=localhost;User ID=root;Password=azerty;Database=mj";
+        private static string connectionString = "Server=172.16.238.3;User ID=api;Password=azerty;Database=MountainJourney";
         // mes identifiants pour me connect a mon mysql workbench
 // TODO: 
 // gener mieux la connection sql = 1 connection

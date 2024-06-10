@@ -11,7 +11,7 @@ class SimpleHttpServer
 {
     private HttpListener listener;
     private List<Users> user;
-    private string connectionString = "Server=localhost;User ID=root;Password=azerty;Database=mj";
+    private static string connectionString = "Server=172.16.238.3;User ID=api;Password=azerty;Database=MountainJourney";
 
     public SimpleHttpServer(string prefixes)
     {
@@ -23,7 +23,7 @@ class SimpleHttpServer
     {
         listener.Start();
         Console.WriteLine("Server MJ started. Listening for requests...");
-        Console.WriteLine("http://localhost:8080/");
+        Console.WriteLine("http://localhost:5000/");
 
         while (true)
         {
@@ -127,7 +127,7 @@ class Program
 {
     static async Task Main()
     {
-        string prefixes = "http://localhost:8080/";
+        string prefixes = "http://localhost:5000/";
         SimpleHttpServer server = new SimpleHttpServer(prefixes);
 
         await server.Start();

@@ -7,7 +7,7 @@ namespace Tools
 {
     public static class TokenVerification
     {
-        private static string connectionString = "Server=localhost;User ID=root;Password=azerty;Database=mj";
+        private static string connectionString = "Server=172.16.238.3;User ID=api;Password=azerty;Database=MountainJourney";
 
         public static async Task<Users> TokenVerify(HttpListenerRequest request)
         {
