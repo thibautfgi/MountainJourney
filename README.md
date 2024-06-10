@@ -2,9 +2,6 @@
 
 Local test of the api (be sure to be on the terminal cmd): 
 
-dotnet run --project API_Test/
-
-or 
 
 dotnet run --project SITE_MJ/API_MJ/
 

@@ -10,6 +10,10 @@ ajout d'une fonctionnalite de test de connection a la db dans l'api
 mise en place token api
 mise en place user controller
 optimisation token api
+all controler n model
+test with postman
+doc api
+
 
 
 
