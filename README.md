@@ -1,7 +1,7 @@
 <h1 align="center">MountainJourney</h1>
 
 <p align="center">
-  <img src="https://cdn.discordapp.com/attachments/1100470591720542250/1249750199627415688/logo.png?ex=66687012&is=66671e92&hm=92622a5520252717fb57dc4cc7f5bbb166a0784af67a61d5c811d63582ab7e49&" alt="MountainJourney Logo" width="200">
+  <img src="/Tools/ImageRessource/logo.png" alt="MountainJourney Logo" width="200">
 </p>
 
 ## Description
