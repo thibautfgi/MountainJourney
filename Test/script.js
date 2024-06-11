@@ -1,7 +1,16 @@
-document.getElementById('fetch-data-button').addEventListener('click', fetchData);
+mapboxgl.accessToken = 'pk.eyJ1IjoianVzdGFjaGlwcyIsImEiOiJjbHgwZHgxcGowaG01MmlyMnhhb3dyZXJxIn0.dcYR9tSRJ2AUaoCsJ7gbVA'; // Replace with your Mapbox access token
 
-function fetchData() {
-    const apiUrl = 'http://localhost:8080/api/users'; // Ensure this URL is correct
+const map = new mapboxgl.Map({
+    container: 'map', // Container ID
+    style: 'mapbox://styles/mapbox/streets-v11', // Map style to use
+    center: [0, 0], // Starting position [lng, lat]
+    zoom: 2 // Starting zoom level
+});
+
+document.addEventListener('DOMContentLoaded', fetchMarks);
+
+function fetchMarks() {
+    const apiUrl = 'http://localhost:8080/api/marks'; // Ensure this URL is correct
 
     fetch(apiUrl)
         .then(response => {
@@ -11,27 +20,28 @@ function fetchData() {
             return response.json();
         })
         .then(data => {
-            displayData(data);
+            displayMarks(data);
         })
         .catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
 }
 
-function displayData(users) {
-    const dataContainer = document.getElementById('data-container');
-    dataContainer.innerHTML = ''; // Clear previous data
+function displayMarks(marks) {
+    marks.forEach(mark => {
+        // Create a HTML element for each feature
+        const el = document.createElement('div');
+        el.className = 'marker';
+        el.style.width = '30px';
+        el.style.height = '30px';
+        el.style.backgroundColor = 'red';
+        el.style.borderRadius = '50%';
 
-    users.forEach(user => {
-        const userElement = document.createElement('div');
-        userElement.className = 'user-item';
-        userElement.innerHTML = `
-            <p><strong>ID:</strong> ${user.User_Id}</p>
-            <p><strong>First Name:</strong> ${user.User_FirstName}</p>
-            <p><strong>Last Name:</strong> ${user.User_LastName}</p>
-            <p><strong>Phone:</strong> ${user.User_Phone}</p>
-            <p><strong>Email:</strong> ${user.User_Email}</p>
-        `;
-        dataContainer.appendChild(userElement);
+        // Make a marker for each feature and add to the map
+        new mapboxgl.Marker(el)
+            .setLngLat([mark.Mark_Longitude, mark.Mark_Latitude])
+            .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(`<h3>${mark.Mark_Name}</h3><p>${mark.Mark_Description}</p>`))
+            .addTo(map);
     });
 }
