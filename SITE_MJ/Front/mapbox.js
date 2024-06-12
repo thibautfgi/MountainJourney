@@ -33,8 +33,19 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchUserMaps(1); // Fetch maps for User_Id = 1
     fetchUserLikes(1); // Fetch liked maps for User_Id = 1
 
-    // Handle form submission
+    // Handle form submission for creating a new map
     document.getElementById('create-map-form').addEventListener('submit', createMap);
+
+    // Handle placing a marker on the map
+    document.getElementById('place-marker-button').addEventListener('click', () => {
+        map.once('click', (e) => {
+            const marker = new mapboxgl.Marker()
+                .setLngLat([e.lngLat.lng, e.lngLat.lat])
+                .addTo(map);
+            document.getElementById('marker-lng').value = e.lngLat.lng;
+            document.getElementById('marker-lat').value = e.lngLat.lat;
+        });
+    });
 });
 
 function fetchUserMaps(userId) {
@@ -126,7 +137,6 @@ function createMap(event) {
         location.reload(); // Reload the page on successful map creation
     })
     .catch(error => console.error('Error creating map:', error));
-    location.reload();
 }
 
 function createMapCard(map) {

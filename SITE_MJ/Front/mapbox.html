@@ -49,10 +49,10 @@
                     <a class="nav-link" id="favoris-tab" data-toggle="tab" href="#favoris" role="tab" aria-controls="favoris" aria-selected="false">Mes favoris</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="création-tab" data-toggle="tab" href="#création" role="tab" aria-controls="création" aria-selected="false">Création</a>
+                    <a class="nav-link" id="création-tab" data-toggle="tab" href="#création" role="tab" aria-controls="création" aria-selected="false">Créateur de carte</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="local-tab" data-toggle="tab" href="#local" role="tab" aria-controls="local" aria-selected="false">Cartes Locales</a>
+                    <a class="nav-link" id="mark-tab" data-toggle="tab" href="#mark" role="tab" aria-controls="mark" aria-selected="false">Personalisée carte</a>
                 </li>
             </ul>
             <div class="tab-content" id="myTabContent">
@@ -65,26 +65,55 @@
                     <div id="favoris-container" class="scrollable-content"></div> <!-- Container for liked map data -->
                 </div>
                 <div class="tab-pane fade" id="création" role="tabpanel" aria-labelledby="création-tab">
+                    <div class="textcreation text-center p-3">
+                        <txt1>Crée une nouvelle carte.</txt1>
+                    </div>
                     <!-- Content for Création -->
                     <form id="create-map-form">
-                        <div class="form-group">
+                        <div class="form-group ml-4 mr-4">
                             <label for="map-name">Map Name</label>
                             <input type="text" class="form-control" id="map-name" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group ml-4 mr-4">
                             <label for="map-description">Map Description</label>
                             <textarea class="form-control" id="map-description" rows="3" required></textarea>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group ml-4 mr-4">
                             <label for="map-image">Map Image URL</label>
                             <input type="text" class="form-control" id="map-image" required>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create Map</button>
+                        <button type="submit" class="btn-sub">Create Map</button>
                     </form>
                 </div>
-                <div class="tab-pane fade" id="local" role="tabpanel" aria-labelledby="local-tab">
+                <div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="mark-tab">
                     <!-- Content for Cartes Locales -->
-                    <p>Other information can be placed here.</p>
+                    <div class="textcreation text-center p-3">
+                        <txt1>Planifiez facilement l'itinéraire idéal pour votre prochaine randonnée. </txt1>
+                     
+                    </div>
+                    <!-- Form for adding a marker -->
+                    <form id="add-marker-form">
+                        <div class="form-group ml-4 mr-4">
+                            <label for="marker-name">Name</label>
+                            <input type="text" class="form-control" id="marker-name" required>
+                        </div>
+                        <div class="form-group ml-4 mr-4">
+                            <label for="marker-description">Description</label>
+                            <textarea class="form-control" id="marker-description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group ml-4 mr-4">
+                            <label for="marker-lat">Latitude</label>
+                            <input type="text" class="form-control" id="marker-lat" readonly>
+                        </div>
+                        <div class="form-group ml-4 mr-4">
+                            <label for="marker-lng">Longitude</label>
+                            <input type="text" class="form-control" id="marker-lng" readonly>
+                        </div>
+                        <div class="form-group ml-4 mr-4 d-flex justify-content-between">
+                            <button type="button" class="btn-sub2 " id="place-marker-button">Place Marker</button>
+                            <button type="button" class="btn-sub" id="add-marker-button">Add to Map</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

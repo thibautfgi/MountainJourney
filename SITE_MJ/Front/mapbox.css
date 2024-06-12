@@ -25,6 +25,34 @@ header {
     transition: background 0.3s, color 0.3s;
 }
 
+.btn-sub {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 100px;
+    margin-left: 20px;
+    background-color: #3891A6;
+    color: #ffffff;
+    border-radius: 1vh;
+    border-color: #3891A6;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-sub2 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 100px;
+    margin-left: 20px;
+    background-color: #F7ECDE;
+    color: #000000;
+    border-radius: 1vh;
+    border-color: #3891A6;
+    transition: background 0.3s, color 0.3s;
+}
+
 .navbar-light .navbar-nav .nav-link:hover {
     background: #CEEBBF;
     color: #FFF8F0;
@@ -36,7 +64,8 @@ header {
     color: #FFF8F0;
 }
 
-.navbar-light .navbar-nav .btn-primary:hover {
+.navbar-light .navbar-nav .btn-primary:hover,
+.btn-sub:hover {
     background-color: #0056b3;
     border-color: #0056b3;
 }
@@ -121,3 +150,9 @@ footer {
     flex-direction: column;
     justify-content: center;
 }
+
+.txt1 {
+    font-size: 20px;
+}
+
+
