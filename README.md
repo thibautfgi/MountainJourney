@@ -30,6 +30,7 @@ cd MontainJourney
 Pour lancer l'API en local, exécutez la commande suivante :
 
 ```bash
+dotnet run --project API_TEST/
 dotnet run --project SITE_MJ/API_MJ/
 ```
 

@@ -31,10 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display user maps
     fetchUserMaps(1); // Fetch maps for User_Id = 1
+    fetchUserLikes(1); // Fetch liked maps for User_Id = 1
+
+    // Handle form submission
+    document.getElementById('create-map-form').addEventListener('submit', createMap);
 });
 
 function fetchUserMaps(userId) {
-    fetch(`/api/users/${userId}/maps`)
+    fetch(`http://localhost:8080/api/users/${userId}/maps`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -42,22 +46,106 @@ function fetchUserMaps(userId) {
             return response.json();
         })
         .then(maps => {
-            const cartesContainer = document.getElementById('cartes');
+            const cartesContainer = document.getElementById('data-container'); // Ensure this container exists
             cartesContainer.innerHTML = ''; // Clear any existing content
             maps.forEach(map => {
-                const mapCard = document.createElement('div');
-                mapCard.className = 'card mb-3';
-                mapCard.innerHTML = `
-                    <img src="${map.Map_Image}" class="card-img-top" alt="${map.Map_Name}">
-                    <div class="card-body">
-                        <h5 class="card-title">${map.Map_Name}</h5>
-                        <p class="card-text">${map.Map_TotalDistance}km - ${map.Map_TravelTime} hours</p>
-                        <p class="card-text">${map.Map_Description}</p>
-                        <p class="card-text"><small class="text-muted">Likes: ${map.Map_LikeNumber} Comments: ${map.Map_NumberCommentary}</small></p>
-                    </div>
-                `;
+                const mapCard = createMapCard(map);
                 cartesContainer.appendChild(mapCard);
             });
         })
         .catch(error => console.error('Error fetching maps:', error));
+}
+
+function fetchUserLikes(userId) {
+    fetch(`http://localhost:8080/api/users/${userId}/likes`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(likes => {
+            const likedMapIds = likes.map(like => like.Map_Id);
+            return Promise.all(likedMapIds.map(mapId => fetchMapDetails(mapId)));
+        })
+        .then(likedMaps => {
+            const favorisContainer = document.getElementById('favoris-container');
+            favorisContainer.innerHTML = ''; // Clear any existing content
+            likedMaps.forEach(map => {
+                const mapCard = createMapCard(map);
+                favorisContainer.appendChild(mapCard);
+            });
+        })
+        .catch(error => console.error('Error fetching likes:', error));
+}
+
+function fetchMapDetails(mapId) {
+    return fetch(`http://localhost:8080/api/maps/${mapId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        });
+}
+
+function createMap(event) {
+    event.preventDefault();
+
+    const mapName = document.getElementById('map-name').value;
+    const mapDescription = document.getElementById('map-description').value;
+    const mapImage = document.getElementById('map-image').value;
+
+    const mapData = {
+        User_Id: 1,
+        Map_Name: mapName,
+        Map_Description: mapDescription,
+        Map_LikeNumber: 0,
+        Map_NumberCommentary: 0,
+        Map_TravelTime: 0,
+        Map_TotalDistance: 0,
+        Map_Image: mapImage,
+        Map_Rating: 0
+    };
+
+    fetch('http://localhost:8080/api/maps', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer abcdef123456'
+        },
+        body: JSON.stringify(mapData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(map => {
+        window.location.reload(); // Reload the page on successful map creation
+    })
+    .catch(error => console.error('Error creating map:', error));
+    window.location.reload();
+}
+
+function createMapCard(map) {
+    const mapCard = document.createElement('div');
+    mapCard.className = 'card mb-3';
+    mapCard.innerHTML = `
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="${map.Map_Image}" class="card-img" alt="${map.Map_Name}" style="height: 200px; object-fit: cover; border-radius: 10px;">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">${map.Map_Name}</h5>
+                    <p class="card-text">${map.Map_Description}</p>
+                    <p class="card-text">${map.Map_TotalDistance}km - ${map.Map_TravelTime} hours</p>
+                    <p class="card-text"><small class="text-muted">Likes: ${map.Map_LikeNumber} Comments: ${map.Map_NumberCommentary} Rating: ${map.Map_Rating}</small></p>
+                </div>
+            </div>
+        </div>
+    `;
+    return mapCard;
 }

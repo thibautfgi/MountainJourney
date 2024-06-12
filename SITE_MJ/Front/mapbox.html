@@ -58,16 +58,32 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="cartes" role="tabpanel" aria-labelledby="cartes-tab">
                     <!-- Content for Mes cartes -->
+                    <div id="data-container"></div> <!-- Container for fetched map data -->
                 </div>
                 <div class="tab-pane fade" id="favoris" role="tabpanel" aria-labelledby="favoris-tab">
                     <!-- Content for Mes favoris -->
+                    <div id="favoris-container"></div> <!-- Container for liked map data -->
                 </div>
-                <div class="tab-pane fade" id="création" role="tabpanel" aria-labelledby="autres-tab">
-                    <!-- Content for Autres -->
-                    <p>Other information can be placed here.</p>
+                <div class="tab-pane fade" id="création" role="tabpanel" aria-labelledby="création-tab">
+                    <!-- Content for Création -->
+                    <form id="create-map-form">
+                        <div class="form-group">
+                            <label for="map-name">Map Name</label>
+                            <input type="text" class="form-control" id="map-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="map-description">Map Description</label>
+                            <textarea class="form-control" id="map-description" rows="3" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="map-image">Map Image URL</label>
+                            <input type="text" class="form-control" id="map-image" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Create Map</button>
+                    </form>
                 </div>
-                <div class="tab-pane fade" id="likes" role="tabpanel" aria-labelledby="likes-tab">
-                    <!-- Content for Autres -->
+                <div class="tab-pane fade" id="local" role="tabpanel" aria-labelledby="local-tab">
+                    <!-- Content for Cartes Locales -->
                     <p>Other information can be placed here.</p>
                 </div>
             </div>

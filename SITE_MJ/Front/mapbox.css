@@ -107,3 +107,13 @@ footer {
 #mainContent {
     position: relative;
 }
+
+.card-img {
+    border-radius: 10px;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

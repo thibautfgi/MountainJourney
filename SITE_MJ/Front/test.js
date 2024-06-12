@@ -1,49 +1,45 @@
-document.getElementById('user-form').addEventListener('submit', async function(event) {
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('create-map-form').addEventListener('submit', createMap);
+});
+
+function createMap(event) {
     event.preventDefault();
 
-    const user = {
-        User_FirstName: document.getElementById('first-name').value,
-        User_LastName: document.getElementById('last-name').value,
-        User_Email: document.getElementById('email').value,
-        User_Phone: document.getElementById('phone').value,
-        User_Password: document.getElementById('password').value
+    const mapName = document.getElementById('map-name').value;
+    const mapDescription = document.getElementById('map-description').value;
+    const mapImage = document.getElementById('map-image').value;
+
+    const mapData = {
+        User_Id: 1,
+        Map_Name: mapName,
+        Map_Description: mapDescription,
+        Map_LikeNumber: 0,
+        Map_NumberCommentary: 0,
+        Map_TravelTime: 0,
+        Map_TotalDistance: 0,
+        Map_Image: mapImage,
+        Map_Rating: 0
     };
 
-    const token = 'abcdef123456'; // Replace with your actual token
-
-    try {
-        const response = await fetch('http://localhost:8080/api/users', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            },
-            body: JSON.stringify(user)
-        });
-
-        // Log the raw response
-        console.log('Raw response:', response);
-
-        // Check the response's content type
-        const contentType = response.headers.get('Content-Type');
-
-        let responseData;
-        if (contentType && contentType.includes('application/json')) {
-            responseData = await response.json();
-        } else {
-            responseData = await response.text();
+    fetch('http://localhost:8080/api/maps', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer abcdef123456'
+        },
+        body: JSON.stringify(mapData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-
-        // Log the parsed response data
-        console.log('Parsed response:', responseData);
-
-        if (response.ok) {
-            alert('User created successfully!');
-        } else {
-            alert('Error: ' + responseData.message || responseData);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('An error occurred. Please try again.');
-    }
-});
+        return response.text();
+    })
+    .then(responseText => {
+        document.getElementById('response-message').innerText = responseText;
+    })
+    .catch(error => {
+        console.error('Error creating map:', error);
+        document.getElementById('response-message').innerText = `Error creating map: ${error.message}`;
+    });
+}
