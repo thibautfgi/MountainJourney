@@ -1,0 +1,109 @@
+body {
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #F7E0DE;
+}
+
+header {
+    background: #FFF8F0;
+    padding: 20px;
+}
+
+.navbar-light .navbar-nav .nav-link,
+.navbar-light .navbar-nav .btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 100px;
+    border: 2px solid #CEEBBF;
+    border-radius: 5px;
+    margin: 0 10px;
+    padding: 10px 20px;
+    color: #000000;
+    transition: background 0.3s, color 0.3s;
+}
+
+.navbar-light .navbar-nav .nav-link:hover {
+    background: #CEEBBF;
+    color: #FFF8F0;
+}
+
+.navbar-light .navbar-nav .btn-primary {
+    background-color: #3891A6;
+    border-color: #3891A6;
+    color: #FFF8F0;
+}
+
+.navbar-light .navbar-nav .btn-primary:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+.navbar-brand img.logo {
+    width: 150px; /* Adjust as needed */
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img.logo:hover {
+    transform: scale(1.1);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 160px);
+    background: url('ImageRessource/Paysage1.JPG') no-repeat center center fixed;
+    background-size: cover;
+}
+
+main2 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(100vh - 160px);
+    width: 100%;
+}
+
+footer {
+    background: #FFF8F0;
+    color: #000000;
+}
+
+.classeur {
+    background-color: #FFF8F0;
+    padding: 20px;
+    border-right: 2px solid #CEEBBF;
+}
+
+.nav-tabs .nav-link {
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: #000;
+}
+
+.nav-tabs .nav-link:hover {
+    border-color: #CEEBBF;
+}
+
+.nav-tabs .nav-link.active {
+    border-color: #3891A6;
+}
+
+.tab-content {
+    padding-top: 20px;
+}
+
+
+#toggleButton {
+    background-color: #3891A6 ;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1000;
+}
+#mainContent {
+    position: relative;
+}
