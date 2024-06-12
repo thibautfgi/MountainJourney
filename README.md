@@ -1,7 +1,7 @@
 <h1 align="center">MountainJourney</h1>
 
 <p align="center">
-  <img src="/SITE_MJ/Front/Tools/Image/logo.png" alt="MountainJourney Logo" width="200">
+  <img src="/SITE_MJ/Front/ImageRessource/logo.png" alt="MountainJourney Logo" width="200">
 </p>
 
 ## Description
