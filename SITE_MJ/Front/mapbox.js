@@ -28,4 +28,36 @@ document.addEventListener('DOMContentLoaded', () => {
             map.resize();
         }, 20);
     });
+
+    // Fetch and display user maps
+    fetchUserMaps(1); // Fetch maps for User_Id = 1
 });
+
+function fetchUserMaps(userId) {
+    fetch(`/api/users/${userId}/maps`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(maps => {
+            const cartesContainer = document.getElementById('cartes');
+            cartesContainer.innerHTML = ''; // Clear any existing content
+            maps.forEach(map => {
+                const mapCard = document.createElement('div');
+                mapCard.className = 'card mb-3';
+                mapCard.innerHTML = `
+                    <img src="${map.Map_Image}" class="card-img-top" alt="${map.Map_Name}">
+                    <div class="card-body">
+                        <h5 class="card-title">${map.Map_Name}</h5>
+                        <p class="card-text">${map.Map_TotalDistance}km - ${map.Map_TravelTime} hours</p>
+                        <p class="card-text">${map.Map_Description}</p>
+                        <p class="card-text"><small class="text-muted">Likes: ${map.Map_LikeNumber} Comments: ${map.Map_NumberCommentary}</small></p>
+                    </div>
+                `;
+                cartesContainer.appendChild(mapCard);
+            });
+        })
+        .catch(error => console.error('Error fetching maps:', error));
+}
