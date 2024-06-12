@@ -61,6 +61,8 @@ INSERT INTO maps (User_Id, Map_Name, Map_Description, Map_LikeNumber, Map_Number
 VALUES
 (1, 'Mountain Trail', 'A scenic mountain trail.', 5, 2, 3.5, 12.0, 'https://www.allibert-trekking.com/uploads/media/images/851-jma-montagne.jpeg', 4),
 (1, 'GR 1200', 'YO SUPER.', 5, 2, 3.5, 12.0, 'https://jeromeobiols.com/wordpress/wp-content/uploads/30122016_JOB5054F_Lever_Brenva-1920.jpg', 4),
+(1, 'GR 1', 'YO SUPER.', 5, 2, 3.5, 12.0, 'https://jeromeobiols.com/wordpress/wp-content/uploads/30122016_JOB5054F_Lever_Brenva-1920.jpg', 4),
+(1, 'GR 2', 'YO SUPER.', 5, 2, 3.5, 12.0, 'https://jeromeobiols.com/wordpress/wp-content/uploads/30122016_JOB5054F_Lever_Brenva-1920.jpg', 4),
 (2, 'Forest Path', 'A serene path through the forest.', 10, 5, 2.0, 8.0, 'forest.jpg', 5),
 (3, 'Desert Walk', 'A challenging walk through the desert.', 3, 1, 4.0, 15.0, 'desert.jpg', 3),
 (4, 'City Tour', 'A tour through the historic city.', 8, 3, 2.5, 10.0, 'city.jpg', 4),

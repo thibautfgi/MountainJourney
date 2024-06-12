@@ -76,6 +76,8 @@ footer {
     background-color: #FFF8F0;
     padding: 20px;
     border-right: 2px solid #CEEBBF;
+    height: calc(100vh - 160px); /* Ensure the sidebar has the same height as the map */
+    overflow-y: hidden; /* Prevent overflow of the entire sidebar */
 }
 
 .nav-tabs .nav-link {
@@ -94,8 +96,9 @@ footer {
 
 .tab-content {
     padding-top: 20px;
+    height: calc(100% - 45px); /* Adjust based on the height of the tab links */
+    overflow-y: auto; /* Add vertical scroll */
 }
-
 
 #toggleButton {
     background-color: #3891A6 ;
@@ -104,6 +107,7 @@ footer {
     left: 10px;
     z-index: 1000;
 }
+
 #mainContent {
     position: relative;
 }

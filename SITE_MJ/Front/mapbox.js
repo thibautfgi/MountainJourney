@@ -122,11 +122,11 @@ function createMap(event) {
         }
         return response.json();
     })
-    .then(map => {
-        window.location.reload(); // Reload the page on successful map creation
+    .then(() => {
+        location.reload(); // Reload the page on successful map creation
     })
     .catch(error => console.error('Error creating map:', error));
-    window.location.reload();
+    location.reload();
 }
 
 function createMapCard(map) {
