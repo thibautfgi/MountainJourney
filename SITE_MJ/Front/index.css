@@ -1,0 +1,71 @@
+@import url('style.css');
+
+main {
+    background: url('ImageRessource/Paysage2.JPG') no-repeat center center fixed;
+    background-size: cover;
+    padding: 50px;
+    color: #FFF; /* Couleur du texte en blanc pour contraste */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Pour rendre le texte plus lisible */
+}
+
+.search-bar {
+    background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+    border-radius: 25px;
+    padding: 10px 20px;
+    display: inline-block;
+    margin-top: 20px;
+}
+
+.search-bar .form-control {
+    border-radius: 25px;
+    margin-bottom: 10px;
+}
+
+.section {
+    padding: 50px;
+    background-color: #F7E9E0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.section:nth-child(even) {
+    background-color: #FFF8F0;
+}
+
+.section h2 {
+    margin-bottom: 20px;
+}
+
+.section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-content .text-content {
+    flex: 1;
+    text-align: left;
+    padding: 20px;
+    max-width: 500px;
+}
+
+.section-content .gallery {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+.gallery img {
+    border-radius: 15px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}

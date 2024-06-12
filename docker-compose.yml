@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  web:
+    build: ./SITE_MJ
+    image: duunky/montainjourney:SITE_MJ
+    container_name: SITE-Mountain-Journey
+    ports:
+      - "8080:80"
+    networks:
+      my_network:
+        ipv4_address: 172.16.238.4
+
+  db:
+    build: ./BDD_MJ
+    image: duunky/montainjourney:BDD-MJ
+    container_name: BDD-Mountain-Journey
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: MountainJourney
+    networks:
+      my_network:
+        ipv4_address: 172.16.238.3
+
+networks:
+  my_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.16.238.0/24
