@@ -1,63 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mountain Journey - Login</title>
-  <!-- Inclure le CSS de Bootstrap -->
-  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Votre CSS personnalisé -->
-  <style>
-    body {
-      background-color: #f8f9fa;
-    }
-    .login-container {
-      max-width: 400px;
-      margin: 80px auto;
-      padding: 20px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    }
-    .login-container .logo {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .login-container .logo img {
-      width: 100px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mountain Journey</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-  <div class="container">
-    <div class="login-container">
-      <div class="logo">
-        <img src="https://via.placeholder.com/100" alt="Mountain Journey Logo">
-      </div>
-      <h2 class="text-center">Connexion</h2>
-      <form>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" class="form-control" id="email" placeholder="Entrez votre email">
+    <header class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container">
+                <div class="navbar-collapse justify-content-between">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="explorer.html">Explorer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Communauté</a>
+                        </li>
+                    </ul>
+                    <a class="navbar-brand mx-auto" href="index.html">
+                        <img src="ImageRessource/logo-transp.png" alt="Mountain Journey Logo" class="logo">
+                    </a>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Carte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="#">Se connecter</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="d-flex align-items-center justify-content-center" style="min-height: calc(100vh - 160px);">
+        <div class="login-container p-4 rounded shadow">
+            <h2 class="text-center">Prêt à l'exploration ?</h2>
+            <p class="text-center">Connectez-vous ou bien créez un compte.</p>
+            <form id="login-form">
+                <div class="form-group">
+                    <input type="email" class="form-control" id="email" placeholder="Adresse e-mail" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Connexion</button>
+                <a href="#" class="d-block text-center mt-3">Créez un compte</a>
+            </form>
+            <p class="text-center mt-3">En continuant à utiliser Mountain Journey, vous acceptez nos Politiques de confidentialité. Les données personnelles ajoutées à Mountain Journey sont publiques par défaut.</p>
         </div>
-        <div class="form-group">
-          <label for="password">Mot de passe</label>
-          <input type="password" class="form-control" id="password" placeholder="Entrez votre mot de passe">
-        </div>
-        <button type="submit" class="btn btn-primary btn-block">Se connecter</button>
-      </form>
-      <p class="text-center mt-3">
-        <a href="#">Mot de passe oublié?</a>
-      </p>
-      <p class="text-center">
-        <a href="#">Créer un compte</a>
-      </p>
-    </div>
-  </div>
-  
-  <!-- Inclure le JavaScript de Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </main>
+
+    <footer class="bg-light text-center py-3">
+        <p>© 2024 Mountain Journey. All Rights Reserved</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>

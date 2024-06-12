@@ -25,3 +25,40 @@ function centerMapOnParis() {
 
 // Ajout d'un écouteur d'événement pour le bouton
 document.getElementById('parcours-Paris').addEventListener('click', centerMapOnParis);
+
+document.getElementById('login-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    // Simuler une vérification des informations d'identification et utiliser le token existant
+    if (email === 'user@example.com' && password === 'password123') {
+        alert('Connexion réussie !');
+        // Stocker le token pour une utilisation ultérieure
+        localStorage.setItem('token', 'abcdef123456');
+        
+        // Récupérer les informations des utilisateurs
+        try {
+            const response = await fetch('http://localhost:8080/api/users', {
+                method: 'GET',
+                headers: {
+                    'Authorization': 'Bearer abcdef123456'
+                }
+            });
+
+            if (response.ok) {
+                const users = await response.json();
+                console.log('Utilisateurs :', users);
+            } else {
+                console.error('Erreur lors de la récupération des utilisateurs');
+            }
+        } catch (error) {
+            console.error('Une erreur est survenue :', error);
+        }
+    } else {
+        alert('E-mail ou mot de passe incorrect');
+    }
+});
+
+
+
