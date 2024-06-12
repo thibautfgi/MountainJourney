@@ -108,7 +108,26 @@ document.getElementById('signup-form').addEventListener('submit', async function
     }
 });
 
+  // Toggle password visibility for login form
+  document.getElementById('toggle-password-login').addEventListener('click', function() {
+    const passwordField = document.getElementById('password');
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+});
 
+// Toggle password visibility for signup form
+document.getElementById('toggle-password-signup').addEventListener('click', function() {
+    const passwordField = document.getElementById('signup-password');
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+});
 
-
-
+// Toggle confirm password visibility for signup form
+document.getElementById('toggle-confirm-password').addEventListener('click', function() {
+    const passwordField = document.getElementById('signup-confirm-password');
+    const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+    passwordField.setAttribute('type', type);
+    this.classList.toggle('fa-eye-slash');
+});

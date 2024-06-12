@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="connexion.css">
     <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="ImageRessource/logo-transp.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
 </head>
 <body>
     <header class="bg-light">
@@ -45,14 +47,14 @@
                 <div class="form-group">
                     <input type="email" class="form-control" id="email" placeholder="Adresse e-mail" required>
                 </div>
-                <div class="form-group">
+                <div class="form-group position-relative">
                     <input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
+                    <span class="fa fa-eye position-absolute" id="toggle-password-login" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Connexion</button>
                 <a href="#" class="d-block text-center mt-3" data-toggle="modal" data-target="#signupModal">Créez un compte</a>
             </form>
-            <p class="text-center mt
-                        <p class="text-center mt-3">En continuant à utiliser Mountain Journey, vous acceptez nos Politiques de confidentialité. Les données personnelles ajoutées à Mountain Journey sont publiques par défaut.</p>
+            <p class="text-center mt-3">En continuant à utiliser Mountain Journey, vous acceptez nos Politiques de confidentialité. Les données personnelles ajoutées à Mountain Journey sont publiques par défaut.</p>
         </div>
     </main>
 
@@ -84,13 +86,15 @@
                             <label for="signup-email">Adresse e-mail</label>
                             <input type="email" class="form-control" id="signup-email" placeholder="Adresse e-mail" required>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group position-relative">
                             <label for="signup-password">Mot de passe</label>
                             <input type="password" class="form-control" id="signup-password" placeholder="Mot de passe" required>
+                            <span class="fa fa-eye position-absolute" id="toggle-password-signup" style="right: 10px; top: 70%; transform: translateY(-50%); cursor: pointer;"></span>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group position-relative">
                             <label for="signup-confirm-password">Confirmer le mot de passe</label>
                             <input type="password" class="form-control" id="signup-confirm-password" placeholder="Confirmer le mot de passe" required>
+                            <span class="fa fa-eye position-absolute" id="toggle-confirm-password" style="right: 10px; top: 70%; transform: translateY(-50%); cursor: pointer;"></span>
                         </div>
                         <div class="form-group">
                             <label for="signup-phone">Numéro de téléphone (optionnel)</label>
@@ -109,4 +113,3 @@
     <script src="connexion.js"></script>
 </body>
 </html>
-

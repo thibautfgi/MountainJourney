@@ -1,0 +1,106 @@
+@import url('style.css');
+
+body {
+    font-family: 'Kanit', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    padding-top: 50px;
+    padding-bottom: 50px; /* Add padding-bottom */
+    background: url('ImageRessource/Paysage2.JPG') no-repeat center center fixed;
+    background-size: cover;
+}
+
+.profile-container {
+    background: rgba(255, 240, 224, 0.9); /* Semi-transparent background */
+    backdrop-filter: blur(10px); /* Adding blur for background */
+    padding: 40px;
+    border-radius: 30px; /* More rounded corners */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 500px;
+    width: 100%;
+}
+
+.profile-container h2 {
+    margin-top: 0;
+    color: #000000;
+}
+
+.profile-container p {
+    margin-bottom: 20px;
+    color: #000000;
+}
+
+.profile-container .form-group {
+    margin-bottom: 15px;
+}
+
+.profile-container .form-control {
+    padding: 15px;
+    border-radius: 30px; /* More rounded corners */
+    font-size: 16px;
+    width: 100%; /* Full width */
+    box-sizing: border-box;
+}
+
+.profile-container .form-control[type="email"],
+.profile-container .form-control[type="password"] {
+    background: #CEEBBF;
+    border: none;
+}
+
+.profile-container .btn-primary {
+    padding: 15px;
+    border: none;
+    border-radius: 30px; /* More rounded corners */
+    background: #3891A6;
+    color: #FFF8F0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.profile-container .btn-primary:hover {
+    background: #0056b3;
+}
+
+.profile-container .btn-danger {
+    padding: 15px;
+    border: none;
+    border-radius: 30px; /* More rounded corners */
+    background: #E74C3C;
+    color: #FFF8F0;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.profile-container .btn-danger:hover {
+    background: #C0392B;
+}
+
+.profile-container a {
+    color: #3891A6;
+    text-decoration: none;
+}
+
+.profile-container a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    background-color: #F7E0DE; /* Match the page background */
+    padding: 20px 0;
+    text-align: center;
+    width: 100%;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil de l'utilisateur</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="profil.css">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="icon" href="ImageRessource/logo-transp.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome -->
+</head>
+<body>
+    <header class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container">
+                <div class="navbar-collapse justify-content-between">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="explorer.html">Explorer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Communauté</a>
+                        </li>
+                    </ul>
+                    <a class="navbar-brand mx-auto" href="index.html">
+                        <img src="ImageRessource/logo-transp.png" alt="Mountain Journey Logo" class="logo">
+                    </a>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Carte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" id="logout-btn" href="#">Se déconnecter</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="d-flex align-items-center justify-content-center">
+        <div class="profile-container p-4 rounded shadow">
+            <h2 class="text-center">Profil de l'utilisateur</h2>
+            <form id="profile-form">
+                <div class="form-group">
+                    <input type="text" class="form-control" id="profile-firstname" placeholder="Prénom" required>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="profile-lastname" placeholder="Nom" required>
+                </div>
+                <div class="form-group">
+                    <input type="email" class="form-control" id="profile-email" placeholder="Adresse e-mail" required>
+                </div>
+                <div class="form-group position-relative">
+                    <input type="password" class="form-control" id="profile-password" placeholder="Mot de passe" required>
+                    <span class="fa fa-eye position-absolute" id="toggle-password" style="right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></span>
+                </div>
+                <div class="form-group">
+                    <input type="text" class="form-control" id="profile-phone" placeholder="Numéro de téléphone (optionnel)">
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Mettre à jour</button>
+                <button type="button" class="btn btn-danger btn-block mt-3" id="delete-account-btn">Supprimer le compte</button>
+            </form>
+        </div>
+    </main>
+
+    <footer class="text-center py-4">
+        <p>© 2024 Mountain Journey. All Rights Reserved</p>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="auth.js"></script>
+    <script src="profil.js"></script>
+</body>
+</html>

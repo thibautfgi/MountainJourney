@@ -33,7 +33,7 @@ function updateNavbarForLoggedInUser() {
             <a class="nav-link" href="carte.html">Carte</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="profile.html">Profil</a>
+            <a class="nav-link" href="profil.html">Profil</a>
         </li>
     `;
 }
