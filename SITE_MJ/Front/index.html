@@ -1,159 +1,90 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Communauté de Randonnée</title>
+    <title>Mountain Journey</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-        .navbar {
-            background-color: #2c3e50;
-        }
-        .navbar-brand {
-            display: flex;
-            align-items: center;
-            color: white;
-        }
-        .navbar-brand img {
-            width: 50px;
-            margin-right: 10px;
-        }
-        .navbar-nav .nav-link {
-            color: white;
-        }
-        .hero-section {
-            background: url('path-to-your-image.jpg') no-repeat center center;
-            background-size: cover;
-            height: 90vh;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
-        }
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-        }
-        .hero-section h1 {
-            font-size: 4rem;
-            font-weight: bold;
-            z-index: 1;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-        .hero-section .search-bar {
-            max-width: 600px;
-            width: 100%;
-            z-index: 1;
-            margin-top: 20px;
-            display: flex;
-        }
-        .hero-section .search-bar input {
-            border-radius: 20px 0 0 20px;
-            padding: 15px;
-            width: 100%;
-            border: none;
-            outline: none;
-        }
-        .hero-section .search-bar button {
-            border-radius: 0 20px 20px 0;
-            border: none;
-            padding: 15px 25px;
-            background-color: #e67e22;
-            color: white;
-            cursor: pointer;
-        }
-        .content-section {
-            padding: 50px 0;
-        }
-        .trail-card img {
-            border-radius: 10px;
-        }
-        .trail-card {
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        footer {
-            background-color: #2c3e50;
-            color: white;
-            padding: 20px 0;
-        }
-    </style>
-</head>
-<body>
-    <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="#">
-            <img src="logo.png" alt="Logo">
-            Mountain Journey
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="explorer.html">Explorer</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Communauté</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Enregistré</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="connexion.html">Connexion</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    <link rel="stylesheet" href="index.css">
     
-    <header class="hero-section">
-        <h1>Trouvez votre vraie nature</h1>
-        <div class="search-bar">
-            <input type="text" placeholder="Ville, parc ou itinéraire" class="form-control">
-            <button class="btn">Explorer</button>
-        </div>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+            <div class="container">
+                <div class="navbar-collapse justify-content-between">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="explorer.html">Explorer</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Communauté</a>
+                        </li>
+                    </ul>
+                    <a class="navbar-brand mx-auto" href="#">
+                        <img src="ImageRessource/logo-transp.png" alt="Mountain Journey Logo" class="logo">
+                    </a>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Carte</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-primary" href="connexion.html">Se connecter</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </header>
     
-    <section class="content-section container">
-        <h2 class="text-center mb-5">Les plus beaux sentiers près de vous</h2>
-        <div class="row">
-            <div class="col-md-4 trail-card">
-                <img src="trail1.jpg" alt="Trail 1" class="img-fluid">
-                <h5 class="mt-2">Trail 1</h5>
+
+    <main class="main-content text-center" style="padding-top: 120px;">
+        <h1>Votre aventure commence ici</h1>
+        <div class="search-bar mt-3">
+            <input type="text" class="form-control" placeholder="Gr, refuge, village...">
+            <button class="btn btn-primary mt-2">Explorez vos alentours</button>
+        </div>
+    </main>
+
+    <section class="section text-center py-5">
+        <h2>Créez votre voyage</h2>
+        <div class="section-content">
+            <div class="gallery">
+                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
+                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
+                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
+                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
             </div>
-            <div class="col-md-4 trail-card">
-                <img src="trail2.jpg" alt="Trail 2" class="img-fluid">
-                <h5 class="mt-2">Trail 2</h5>
-            </div>
-            <div class="col-md-4 trail-card">
-                <img src="trail3.jpg" alt="Trail 3" class="img-fluid">
-                <h5 class="mt-2">Trail 3</h5>
+            <div class="text-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at ligula id libero pretium consequat.</p>
             </div>
         </div>
     </section>
-    
-    <footer class="text-center">
-        <p>&copy; 2024 Mountain Journey. Tous droits réservés.</p>
+
+    <section class="section text-center py-5">
+        <h2>Découvrez de nouveaux horizons</h2>
+        <div class="section-content">
+            <div class="text-content">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at ligula id libero pretium consequat.</p>
+            </div>
+            <div class="gallery">
+                <img src="ImageRessource/Paysage2.JPG" alt="GR91 - Vercors">
+                <img src="ImageRessource/Paysage2.JPG" alt="GR20 - Corse">
+            </div>
+        </div>
+    </section>
+
+    <footer class="text-center py-4">
+        <p>&copy; 2024 Mountain Journey All Rights Reserved.</p>
     </footer>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

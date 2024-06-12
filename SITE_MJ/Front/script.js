@@ -26,39 +26,68 @@ function centerMapOnParis() {
 // Ajout d'un écouteur d'événement pour le bouton
 document.getElementById('parcours-Paris').addEventListener('click', centerMapOnParis);
 
-document.getElementById('login-form').addEventListener('submit', async function(event) {
+
+
+//  Pour la page de connexion
+
+document.getElementById('login-form').addEventListener('submit', function(event) {
     event.preventDefault();
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Simuler une vérification des informations d'identification et utiliser le token existant
-    if (email === 'user@example.com' && password === 'password123') {
-        alert('Connexion réussie !');
-        // Stocker le token pour une utilisation ultérieure
-        localStorage.setItem('token', 'abcdef123456');
-        
-        // Récupérer les informations des utilisateurs
-        try {
-            const response = await fetch('http://localhost:8080/api/users', {
-                method: 'GET',
-                headers: {
-                    'Authorization': 'Bearer abcdef123456'
-                }
-            });
-
-            if (response.ok) {
-                const users = await response.json();
-                console.log('Utilisateurs :', users);
-            } else {
-                console.error('Erreur lors de la récupération des utilisateurs');
-            }
-        } catch (error) {
-            console.error('Une erreur est survenue :', error);
+    // Envoye une requête à l'API pour vérifier les informations d'identification
+    fetch('http://localhost:8080/api/users')
+    .then(response => response.json())
+    .then(users => {
+        const user = users.find(user => user.User_Email === email && user.User_Password === password);
+        if (user) {
+            // Connexion réussie
+            alert('Connexion réussie !');
+            // Stocker les informations de l'utilisateur pour une utilisation ultérieure
+            document.cookie = `userId=${user.User_Id}; path=/; max-age=${60*60*24*7}`;
+            // Rediriger vers la page d'accueil
+            window.location.href = 'index.html';
+        } else {
+            // Affiche un message en cas d'erreur
+            alert('E-mail ou mot de passe incorrect');
         }
-    } else {
-        alert('E-mail ou mot de passe incorrect');
-    }
+    })
+    .catch(error => {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors de la connexion. Veuillez réessayer.');
+    });
 });
+
+// Fonction pour obtenir la valeur d'un cookie par son nom
+function getCookie(name) {
+    let cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring((name + '=').length, cookie.length);
+        }
+    }
+    return '';
+}
+
+// Vérifie si l'utilisateur est connecté
+function checkAuth() {
+    const userId = getCookie('userId');
+    if (userId) {
+        // L'utilisateur est connecté
+        console.log('Utilisateur connecté');
+    } else {
+        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
+        window.location.href = 'connexion.html';
+    }
+}
+
+// Appeler checkAuth lorsque la page se charge pour vérifier si l'utilisateur est connecté
+window.onload = checkAuth;
+
+
+//  -----------------
+
 
 
 

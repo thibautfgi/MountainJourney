@@ -1,13 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap');
+
 body {
     font-family: 'Kanit', sans-serif;
     margin: 0;
     padding: 0;
-    background: #F7E0DE;
+    background: #F7E0DE; /* Background color */
 }
 
 header {
     background: #FFF8F0;
     padding: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 
 .navbar-light .navbar-nav .nav-link,
@@ -41,8 +46,15 @@ header {
     border-color: #0056b3;
 }
 
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .navbar-brand img.logo {
-    width: 150px; /* Adjust as needed */
+    width: auto; /* Ensuring the aspect ratio is maintained */
+    height: 80px; /* Keeping the logo at a fixed height */
     transition: transform 0.3s ease;
 }
 
@@ -50,79 +62,8 @@ header {
     transform: scale(1.1);
 }
 
-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: calc(100vh - 160px);
-    background: url('ImageRessource/Paysage2.JPG') no-repeat center center fixed;
-    background-size: cover;
-}
-
-.login-container {
-    background: rgba(255, 240, 224, 0.8); 
-    backdrop-filter: blur(10px);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-}
-
-.login-container h2 {
-    margin-top: 0;
-    color: #000000;
-}
-
-.login-container p {
-    margin-bottom: 20px;
-    color: #000000;
-}
-
-.login-container .form-group {
-    margin-bottom: 15px;
-}
-
-.login-container .form-control {
-    padding: 15px;
-    border-radius: 20px;
-    font-size: 16px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.login-container .form-control[type="email"],
-.login-container .form-control[type="password"] {
-    background: #CEEBBF;
-    border: none;
-}
-
-.login-container .btn-primary {
-    padding: 15px;
-    border: none;
-    border-radius: 20px;
-    background: #3891A6;
-    color: #FFF8F0;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.login-container .btn-primary:hover {
-    background: #0056b3;
-}
-
-.login-container a {
-    color: #3891A6;
-    text-decoration: none;
-}
-
-.login-container a:hover {
-    text-decoration: underline;
-}
-
 footer {
     background: #FFF8F0;
     color: #000000;
+    padding: 20px;
 }
