@@ -49,9 +49,10 @@
                     <input type="password" class="form-control" id="password" placeholder="Mot de passe" required>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Connexion</button>
-                <a href="#" class="d-block text-center mt-3">Créez un compte</a>
+                <a href="#" class="d-block text-center mt-3" data-toggle="modal" data-target="#signupModal">Créez un compte</a>
             </form>
-            <p class="text-center mt-3">En continuant à utiliser Mountain Journey, vous acceptez nos Politiques de confidentialité. Les données personnelles ajoutées à Mountain Journey sont publiques par défaut.</p>
+            <p class="text-center mt
+                        <p class="text-center mt-3">En continuant à utiliser Mountain Journey, vous acceptez nos Politiques de confidentialité. Les données personnelles ajoutées à Mountain Journey sont publiques par défaut.</p>
         </div>
     </main>
 
@@ -59,9 +60,53 @@
         <p>© 2024 Mountain Journey. All Rights Reserved</p>
     </footer>
 
+    <!-- Modal d'inscription -->
+    <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="signupModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="signupModalLabel">Créer un compte</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="signup-form">
+                        <div class="form-group">
+                            <label for="signup-firstname">Prénom</label>
+                            <input type="text" class="form-control" id="signup-firstname" placeholder="Prénom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-lastname">Nom</label>
+                            <input type="text" class="form-control" id="signup-lastname" placeholder="Nom" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-email">Adresse e-mail</label>
+                            <input type="email" class="form-control" id="signup-email" placeholder="Adresse e-mail" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-password">Mot de passe</label>
+                            <input type="password" class="form-control" id="signup-password" placeholder="Mot de passe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-confirm-password">Confirmer le mot de passe</label>
+                            <input type="password" class="form-control" id="signup-confirm-password" placeholder="Confirmer le mot de passe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signup-phone">Numéro de téléphone (optionnel)</label>
+                            <input type="tel" class="form-control" id="signup-phone" placeholder="Numéro de téléphone">
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Créer un compte</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="connexion.js"></script>
 </body>
 </html>
+

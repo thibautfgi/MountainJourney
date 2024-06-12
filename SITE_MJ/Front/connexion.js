@@ -5,7 +5,7 @@ document.getElementById('login-form').addEventListener('submit', function(event)
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
 
-    // Envoye une requête à l'API pour vérifier les informations d'identification
+    // Envoie une requête API pour vérifier les informations d'identification
     fetch('http://localhost:8080/api/users')
     .then(response => response.json())
     .then(users => {
@@ -47,13 +47,68 @@ function checkAuth() {
         // L'utilisateur est connecté
         console.log('Utilisateur connecté');
     } else {
-        // Si l'utilisateur n'est pas connecté, redirigez-le vers la page de connexion
-        window.location.href = 'connexion.html';
+        console.log('Utilisateur non connecté, redirection vers la page de connexion');
     }
 }
 
-// Appeler checkAuth lorsque la page se charge pour vérifier si l'utilisateur est connecté
-window.onload = checkAuth;
+// // Appel checkAuth lorsque la page se charge pour vérifier si l'utilisateur est connecté
+// window.onload = checkAuth;
 
 
 //  -----------------
+
+//  Création de compte
+
+document.getElementById('signup-form').addEventListener('submit', async function(event) {
+    event.preventDefault();
+
+    const firstName = document.getElementById('signup-firstname').value;
+    const lastName = document.getElementById('signup-lastname').value;
+    const email = document.getElementById('signup-email').value;
+    const password = document.getElementById('signup-password').value;
+    const confirmPassword = document.getElementById('signup-confirm-password').value;
+    const phone = document.getElementById('signup-phone').value;
+
+    if (password !== confirmPassword) {
+        alert('Les mots de passe ne correspondent pas.');
+        return;
+    }
+
+    const authToken = 'abcdef123456'; // Token
+
+    try {
+        const response = await fetch('http://localhost:8080/api/users', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({
+                User_FirstName: firstName,
+                User_LastName: lastName,
+                User_Email: email,
+                User_Password: password,
+                User_Phone: phone
+            })
+        });
+
+        // Vérif le statut de la réponse
+        if (response.ok) {
+            alert('Compte créé avec succès !');
+            $('#signupModal').modal('hide');
+        } else {
+            // Si la réponse n'est pas au format JSON valide, affiche un message d'erreur
+            const responseText = await response.text();
+            console.error('Réponse brute:', responseText);
+            alert('Erreur lors de la création du compte: ' + responseText);
+        }
+    } catch (error) {
+        console.error('Erreur:', error);
+        alert('Une erreur est survenue lors de la création du compte. Veuillez réessayer.');
+    }
+});
+
+
+
+
+
