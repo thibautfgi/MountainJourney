@@ -40,11 +40,7 @@
     <main class="main-content text-center">
         <h1>Découvrez votre vraie nature</h1>
         <div class="search-container">
-            <div class="search-bar mt-3 position-relative">
-                <span class="fa fa-search search-icon"></span>
-                <input type="text" class="form-control" placeholder="Ville, parc ou itinéraire">
-            </div>
-            <button class="btn btn-primary mt-3">Explorez les itinéraires à proximité</button>
+            <button class="btn btn-primary mt-3" onclick="exploreNearby()">Explorez les itinéraires à proximité</button>
         </div>
     </main>
 
@@ -52,13 +48,13 @@
         <h2>Créez votre voyage</h2>
         <div class="section-content">
             <div class="gallery">
+                <img src="ImageRessource/Paysage1.JPG" alt="Paysage">
                 <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
-                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
-                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
+                <img src="ImageRessource/walkers.jpg" alt="Paysage">
                 <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
             </div>
             <div class="text-content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at ligula id libero pretium consequat.</p>
+                <p>Marcheur, coureur, randonneur, crée votre carte de voyage de toute pièce et partager les avec une communautée de passionner.</p>
             </div>
         </div>
     </section>
@@ -67,11 +63,11 @@
         <h2>Découvrez de nouveaux horizons</h2>
         <div class="section-content">
             <div class="text-content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at ligula id libero pretium consequat.</p>
+                <p>Explorer les cartes de la communautée, et préparer votre prochain voyage.</p>
             </div>
             <div class="gallery">
                 <img src="ImageRessource/Paysage2.JPG" alt="GR91 - Vercors">
-                <img src="ImageRessource/Paysage2.JPG" alt="GR20 - Corse">
+                <img src="ImageRessource/Paysage1.JPG" alt="GR20 - Corse">
             </div>
         </div>
     </section>
@@ -83,6 +79,22 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function exploreNearby() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const lat = position.coords.latitude;
+                    const lng = position.coords.longitude;
+                    window.location.href = `mapbox.html?lat=${lat}&lng=${lng}`;
+                }, error => {
+                    console.error('Error getting location:', error);
+                    alert('Unable to retrieve your location.');
+                });
+            } else {
+                alert('Geolocation is not supported by this browser.');
+            }
+        }
+    </script>
 </body>
 
 </html>

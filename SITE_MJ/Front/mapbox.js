@@ -18,10 +18,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get User_Id from cookies
     const userId = getCookie('userId');
 
+    // Get lat and lng from URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const lat = parseFloat(urlParams.get('lat'));
+    const lng = parseFloat(urlParams.get('lng'));
+    const center = (lat && lng) ? [lng, lat] : [2.3522, 48.8566]; // Default to Paris if no coordinates are provided
+
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
-        center: [2.3522, 48.8566], // Starting position [lng, lat]
+        center: center, // Use the provided coordinates or default to Paris
         zoom: 10 // Starting zoom level
     });
 
