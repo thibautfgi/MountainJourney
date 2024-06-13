@@ -30,7 +30,7 @@ function updateNavbarForLoggedInUser() {
     const navBar = document.querySelector('.navbar-nav.ml-auto');
     navBar.innerHTML = `
         <li class="nav-item">
-            <a class="nav-link" href="carte.html">Carte</a>
+            <a class="nav-link" href="mapbox.html">Carte</a>
         </li>
         <li class="nav-item">
             <a class="nav-link" href="profil.html">Profil</a>
@@ -43,7 +43,7 @@ function updateNavbarForLoggedOutUser() {
     const navBar = document.querySelector('.navbar-nav.ml-auto');
     navBar.innerHTML = `
         <li class="nav-item">
-            <a class="nav-link" href="carte.html">Carte</a>
+            <a class="nav-link" href="mapbox.html">Carte</a>
         </li>
         <li class="nav-item">
             <a class="btn btn-primary" href="connexion.html">Se connecter</a>
