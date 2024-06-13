@@ -24,8 +24,6 @@
 
 
 
-<<<<<<< HEAD:Documentation/MJ_Suivis.md
-=======
 
 
 ## DunKy
@@ -102,4 +100,3 @@
 
 
 
->>>>>>> bd581339e000bb3ae4d034e07fbe6852c0aa853f:Suivis.md
