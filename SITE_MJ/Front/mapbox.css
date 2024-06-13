@@ -53,6 +53,22 @@ header {
     transition: background 0.3s, color 0.3s;
 }
 
+
+.btn-sub3 {
+    display: inline-flex; /* Change flex to inline-flex */
+    align-items: center; /* Align items to center vertically */
+    justify-content: center; /* Center content horizontally */
+    height: 40px;
+    min-width: 100px;
+    margin-left: 20px;
+    background-color: #3891A6;
+    color: #ffffff;
+    border-radius: 1vh;
+    border-color: #3891A6;
+    transition: background 0.3s, color 0.3s;
+}
+
+
 .navbar-light .navbar-nav .nav-link:hover {
     background: #CEEBBF;
     color: #FFF8F0;
@@ -153,4 +169,11 @@ footer {
 
 .txt1 {
     font-size: 20px;
+}
+
+
+.comment {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 10px;
 }
