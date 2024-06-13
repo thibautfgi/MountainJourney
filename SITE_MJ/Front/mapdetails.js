@@ -3,7 +3,6 @@ import { MAPBOX_ACCESS_TOKEN } from './config.js';
 document.addEventListener('DOMContentLoaded', () => {
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
     const mapId = new URLSearchParams(window.location.search).get('mapId');
-    console.log(mapId)
     if (!mapId) {
         alert('No map ID provided!');
         return;
@@ -14,6 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
         style: 'mapbox://styles/mapbox/streets-v11',
         center: [2.3522, 48.8566], // Starting position [lng, lat]
         zoom: 10 // Starting zoom level
+    });
+
+    map.on('load', () => {
+        console.log('Map has loaded'); // Debug log
+        fetchMapMarks(mapId, map); // Pass the map instance to fetchMapMarks
     });
 
     document.getElementById('toggleButton').addEventListener('click', function () {
@@ -85,6 +89,30 @@ function fetchMapDetails(mapId) {
         .catch(error => console.error('Error fetching map details:', error));
 }
 
+function fetchMapMarks(mapId, map) {
+    fetch(`http://localhost:8080/api/maps/${mapId}/marks`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(marks => {
+            marks.forEach(mark => {
+                new mapboxgl.Marker()
+                    .setLngLat([mark.Mark_Longitude, mark.Mark_Latitude])
+                    .setPopup(
+                        new mapboxgl.Popup({ offset: 25 }) // add popups
+                            .setHTML(
+                                `<h3>${mark.Mark_Name}</h3><p>${mark.Mark_Description}</p>`
+                            )
+                    )
+                    .addTo(map); // Ensure the map instance is used here
+            });
+        })
+        .catch(error => console.error('Error fetching marks:', error));
+}
+
 function fetchUserMarks(mapId) {
     fetch(`http://localhost:8080/api/maps/${mapId}/marks`)
         .then(response => {
@@ -114,7 +142,7 @@ function populateMarkDropdown(dropdownId, marks) {
 function addMarker(event) {
     event.preventDefault();
     const mapId = new URLSearchParams(window.location.search).get('mapId');
-    const mapyo = parseInt(mapId)
+    const mapyo = parseInt(mapId);
     const markerName = document.getElementById('marker-name').value;
     const markerDescription = document.getElementById('marker-description').value;
     const markerLat = parseFloat(document.getElementById('marker-lat').value);
