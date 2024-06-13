@@ -56,7 +56,6 @@ Pour lancer l'application avec Docker Compose, exécutez la commande suivante :
 ```bash
 docker-compose up --build
 ```
-Cette commande va :
 
 
 
