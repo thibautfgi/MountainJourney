@@ -1,7 +1,7 @@
 <h1 align="center">MountainJourney</h1>
 
 <p align="center">
-  <img src="/SITE_MJ/Front/ImageRessource/logo-transp.png.png" alt="MountainJourney Logo" width="200">
+  <img src="/SITE_MJ/Front/ImageRessource/logo-transp.png" alt="MountainJourney Logo" width="200">
 </p>
 
 ## Description
@@ -73,7 +73,7 @@ docker-compose down
 
 
 
-># ** WARNING : ** Sometime, git can modify the sh executable endline and break it. If that happen, you will need to change your encoding of your sh file from CRLF -> LF (bottom right corner of VS CODE).
+>### ** WARNING : ** Sometime, git can modify the sh executable endline and break it. If that happen, you will need to change your encoding of your sh file from CRLF -> LF (bottom right corner of VS CODE).
 
 ## Auteurs
 
