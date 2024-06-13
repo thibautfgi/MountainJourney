@@ -46,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('marker-lat').value = e.lngLat.lat;
         });
     });
+
+    // Handle form submission for adding a new mark
+    document.getElementById('add-marker-form').addEventListener('submit', createMark);
 });
 
 function fetchUserMaps(userId) {
@@ -137,6 +140,44 @@ function createMap(event) {
         location.reload(); // Reload the page on successful map creation
     })
     .catch(error => console.error('Error creating map:', error));
+    location.reload();
+}
+
+function createMark(event) {
+    event.preventDefault();
+
+    const markerName = document.getElementById('marker-name').value;
+    const markerDescription = document.getElementById('marker-description').value;
+    const markerLat = parseFloat(document.getElementById('marker-lat').value);
+    const markerLng = parseFloat(document.getElementById('marker-lng').value);
+
+    const markData = {
+        Map_Id: 1, // Assuming you have a Map_Id to associate this mark with
+        Mark_Name: markerName,
+        Mark_Description: markerDescription,
+        Mark_Latitude: markerLat,
+        Mark_Longitude: markerLng
+    };
+
+    fetch('http://localhost:8080/api/marks', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer abcdef123456'
+        },
+        body: JSON.stringify(markData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(() => {
+        location.reload(); // Reload the page on successful mark creation
+    })
+    .catch(error => console.error('Error creating mark:', error));
+    location.reload();
 }
 
 function createMapCard(map) {
