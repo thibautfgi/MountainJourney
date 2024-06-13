@@ -17,10 +17,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get User_Id from cookies
     const userId = getCookie('userId');
-    if (!userId) {
-        alert('User is not logged in!');
-        return;
-    }
 
     var map = new mapboxgl.Map({
         container: 'map',
@@ -34,32 +30,43 @@ document.addEventListener('DOMContentLoaded', () => {
         fetchAllMarksAndRoutes(map); // Fetch and display all markers and routes
     });
 
-    document.getElementById('toggleButton').addEventListener('click', function () {
-        const sidebar = document.getElementById('sidebar');
-        const mainContent = document.getElementById('mainContent');
-        if (sidebar.classList.contains('show')) {
-            sidebar.classList.remove('show');
-            mainContent.classList.remove('col-8');
-            mainContent.classList.add('col-12');
-            this.innerHTML = '&#10095;';
-        } else {
-            sidebar.classList.add('show');
-            mainContent.classList.remove('col-12');
-            mainContent.classList.add('col-8');
-            this.innerHTML = '&#10094;';
-        }
-        // Resize the map after the layout change
+    if (userId) {
+        document.getElementById('toggleButton').addEventListener('click', function () {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            if (sidebar.classList.contains('show')) {
+                sidebar.classList.remove('show');
+                mainContent.classList.remove('col-8');
+                mainContent.classList.add('col-12');
+                this.innerHTML = '&#10095;';
+            } else {
+                sidebar.classList.add('show');
+                mainContent.classList.remove('col-12');
+                mainContent.classList.add('col-8');
+                this.innerHTML = '&#10094;';
+            }
+            // Resize the map after the layout change
+            setTimeout(() => {
+                map.resize();
+            }, 20);
+        });
+
+        // Fetch and display user maps and liked maps
+        fetchUserMaps(userId);
+        fetchUserLikes(userId);
+
+        // Handle form submission for creating a new map
+        document.getElementById('create-map-form').addEventListener('submit', (event) => createMap(event, userId));
+    } else {
+        // Hide sidebar and expand map to full screen if the user is not logged in
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('mainContent').classList.remove('col-8');
+        document.getElementById('mainContent').classList.add('col-12');
+        document.getElementById('toggleButton').style.display = 'none';
         setTimeout(() => {
             map.resize();
         }, 20);
-    });
-
-    // Fetch and display user maps and liked maps
-    fetchUserMaps(userId);
-    fetchUserLikes(userId);
-
-    // Handle form submission for creating a new map
-    document.getElementById('create-map-form').addEventListener('submit', (event) => createMap(event, userId));
+    }
 });
 
 function fetchAllMarksAndRoutes(map) {
@@ -235,6 +242,7 @@ function createMap(event, userId) {
         location.reload(); // Reload the page on successful map creation
     })
     .catch(error => console.error('Error creating map:', error));
+    location.reload();
 }
 
 function createMapCard(map) {
