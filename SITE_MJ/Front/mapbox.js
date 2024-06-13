@@ -148,7 +148,7 @@ function createMapCard(map) {
         </div>
     `;
     mapCard.addEventListener('click', () => {
-        window.location.href = `map-details.html?mapId=${map.Map_Id}`;
+        window.location.href = `mapdetails.html?mapId=${map.Map_Id}`;
     });
     return mapCard;
 }

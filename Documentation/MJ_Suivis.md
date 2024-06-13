@@ -23,8 +23,3 @@ Thibaut Figueira :
 
 
 
-
-
-
-planning?
-doc!doc!doc!doc!doc!doc!

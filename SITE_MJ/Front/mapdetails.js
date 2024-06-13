@@ -3,6 +3,7 @@ import { MAPBOX_ACCESS_TOKEN } from './config.js';
 document.addEventListener('DOMContentLoaded', () => {
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
     const mapId = new URLSearchParams(window.location.search).get('mapId');
+    console.log(mapId)
     if (!mapId) {
         alert('No map ID provided!');
         return;
@@ -107,14 +108,15 @@ function populateMarkDropdown(dropdownId, marks) {
 
 function addMarker(event) {
     event.preventDefault();
-
+    const mapId = new URLSearchParams(window.location.search).get('mapId');
+    const mapyo = parseInt(mapId)
     const markerName = document.getElementById('marker-name').value;
     const markerDescription = document.getElementById('marker-description').value;
     const markerLat = parseFloat(document.getElementById('marker-lat').value);
     const markerLng = parseFloat(document.getElementById('marker-lng').value);
 
     const markerData = {
-        Map_Id: 1, // Use the actual map ID
+        Map_Id: mapyo, // Use the actual map ID
         Mark_Name: markerName,
         Mark_Description: markerDescription,
         Mark_Latitude: markerLat,
@@ -175,4 +177,6 @@ function addRoute(event) {
         location.reload(); // Reload the page on successful route creation
     })
     .catch(error => console.error('Error creating route:', error));
+    location.reload();
 }
+
