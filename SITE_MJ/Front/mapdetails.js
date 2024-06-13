@@ -130,7 +130,7 @@ function fetchAndDrawRoutes(mapId, map) {
         .catch(error => console.error('Error fetching routes:', error));
 }
 
-function drawRoute(route, map) {
+function drawRoute(route, map) { //black magic
     Promise.all([
         fetch(`http://localhost:8080/api/marks/${route.Mark_Start}`)
             .then(response => response.json()),
@@ -140,31 +140,38 @@ function drawRoute(route, map) {
         const start = [startMark.Mark_Longitude, startMark.Mark_Latitude];
         const end = [endMark.Mark_Longitude, endMark.Mark_Latitude];
 
-        map.addSource(`route-${route.Route_Id}`, {
-            type: 'geojson',
-            data: {
-                type: 'Feature',
-                properties: {},
-                geometry: {
-                    type: 'LineString',
-                    coordinates: [start, end]
-                }
-            }
-        });
+        const directionsRequest = `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
 
-        map.addLayer({
-            id: `route-${route.Route_Id}`,
-            type: 'line',
-            source: `route-${route.Route_Id}`,
-            layout: {
-                'line-join': 'round',
-                'line-cap': 'round'
-            },
-            paint: {
-                'line-color': '#888',
-                'line-width': 6
-            }
-        });
+        fetch(directionsRequest)
+            .then(response => response.json())
+            .then(data => {
+                const routeData = data.routes[0].geometry;
+                
+                map.addSource(`route-${route.Route_Id}`, {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        properties: {},
+                        geometry: routeData
+                    }
+                });
+
+                map.addLayer({
+                    id: `route-${route.Route_Id}`,
+                    type: 'line',
+                    source: `route-${route.Route_Id}`,
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    paint: {
+                        'line-color': '#3887be',
+                        'line-width': 5,
+                        'line-opacity': 0.75
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching directions:', error));
     }).catch(error => console.error('Error fetching marks for route:', error));
 }
 

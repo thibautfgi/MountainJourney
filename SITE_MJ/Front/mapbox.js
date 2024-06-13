@@ -9,6 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
         zoom: 10 // Starting zoom level
     });
 
+    map.on('load', () => {
+        console.log('Map has loaded'); // Debug log
+        fetchAllMarksAndRoutes(map); // Fetch and display all markers and routes
+    });
+
     document.getElementById('toggleButton').addEventListener('click', function () {
         const sidebar = document.getElementById('sidebar');
         const mainContent = document.getElementById('mainContent');
@@ -36,6 +41,89 @@ document.addEventListener('DOMContentLoaded', () => {
     // Handle form submission for creating a new map
     document.getElementById('create-map-form').addEventListener('submit', createMap);
 });
+
+function fetchAllMarksAndRoutes(map) {
+    fetch('http://localhost:8080/api/marks')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(marks => {
+            marks.forEach(mark => {
+                new mapboxgl.Marker()
+                    .setLngLat([mark.Mark_Longitude, mark.Mark_Latitude])
+                    .setPopup(
+                        new mapboxgl.Popup({ offset: 25 }) // add popups
+                            .setHTML(
+                                `<h3>${mark.Mark_Name}</h3><p>${mark.Mark_Description}</p>`
+                            )
+                    )
+                    .addTo(map); // Ensure the map instance is used here
+            });
+        })
+        .catch(error => console.error('Error fetching marks:', error));
+
+    fetch('http://localhost:8080/api/routes')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(routes => {
+            routes.forEach(route => {
+                drawRoute(route, map);
+            });
+        })
+        .catch(error => console.error('Error fetching routes:', error));
+}
+
+function drawRoute(route, map) {
+    Promise.all([
+        fetch(`http://localhost:8080/api/marks/${route.Mark_Start}`)
+            .then(response => response.json()),
+        fetch(`http://localhost:8080/api/marks/${route.Mark_End}`)
+            .then(response => response.json())
+    ]).then(([startMark, endMark]) => {
+        const start = [startMark.Mark_Longitude, startMark.Mark_Latitude];
+        const end = [endMark.Mark_Longitude, endMark.Mark_Latitude];
+
+        const directionsRequest = `https://api.mapbox.com/directions/v5/mapbox/driving/${start[0]},${start[1]};${end[0]},${end[1]}?geometries=geojson&access_token=${mapboxgl.accessToken}`;
+
+        fetch(directionsRequest)
+            .then(response => response.json())
+            .then(data => {
+                const routeData = data.routes[0].geometry;
+
+                map.addSource(`route-${route.Route_Id}`, {
+                    type: 'geojson',
+                    data: {
+                        type: 'Feature',
+                        properties: {},
+                        geometry: routeData
+                    }
+                });
+
+                map.addLayer({
+                    id: `route-${route.Route_Id}`,
+                    type: 'line',
+                    source: `route-${route.Route_Id}`,
+                    layout: {
+                        'line-join': 'round',
+                        'line-cap': 'round'
+                    },
+                    paint: {
+                        'line-color': '#3887be',
+                        'line-width': 5,
+                        'line-opacity': 0.75
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching directions:', error));
+    }).catch(error => console.error('Error fetching marks for route:', error));
+}
 
 function fetchUserMaps(userId) {
     fetch(`http://localhost:8080/api/users/${userId}/maps`)

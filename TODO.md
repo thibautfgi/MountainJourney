@@ -22,10 +22,10 @@
 - [x] Tests unitaires pour les endpoints principaux
 
 ### À Faire
-- [ ] Ajouter des endpoints pour les fonctionnalités manquantes
+- [x] Ajouter des endpoints pour les fonctionnalités manquantes
 - [ ] Optimiser les requêtes SQL pour améliorer les performances
 - [ ] Mise en place des tests de charge et de performance
-- [ ] Implémenter des fonctionnalités de sécurité supplémentaires (ex. rate limiting)
+- [?] Implémenter des fonctionnalités de sécurité supplémentaires (ex. rate limiting)
 
 ## Front-end du site
 ### Fait
@@ -40,6 +40,7 @@
 - [ ] Intégrer les fonctionnalités interactives (ex. cartes, filtres de recherche)
 - [ ] Ajouter les animations et transitions manquantes
 - [ ] Tests utilisateurs pour améliorer l'UX/UI
+
 
 ## Documentation
 ### Fait
