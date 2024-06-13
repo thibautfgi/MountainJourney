@@ -100,12 +100,14 @@ function fetchMapMarks(mapId, map) {
         })
         .then(marks => {
             marks.forEach(mark => {
-                new mapboxgl.Marker()
+                const marker = new mapboxgl.Marker()
                     .setLngLat([mark.Mark_Longitude, mark.Mark_Latitude])
                     .setPopup(
                         new mapboxgl.Popup({ offset: 25 }) // add popups
                             .setHTML(
-                                `<h3>${mark.Mark_Name}</h3><p>${mark.Mark_Description}</p>`
+                                `<h3>${mark.Mark_Name}</h3>
+                                <p>${mark.Mark_Description}</p>
+                                <button class="btn-delete" onclick="deleteMarker(${mark.Mark_Id})" style="background-color: #C0392B;">Delete</button>`
                             )
                     )
                     .addTo(map); // Ensure the map instance is used here
@@ -236,6 +238,7 @@ function addMarker(event) {
         location.reload(); // Reload the page on successful marker creation
     })
     .catch(error => console.error('Error creating marker:', error));
+    location.reload();
 }
 
 function addRoute(event) {
@@ -272,4 +275,22 @@ function addRoute(event) {
         location.reload(); // Reload the page on successful route creation
     })
     .catch(error => console.error('Error creating route:', error));
+    location.reload();
+}
+
+// Ensure the deleteMarker function is in the global scope
+window.deleteMarker = function (markId) {
+    fetch(`http://localhost:8080/api/marks/${markId}`, {
+        method: 'DELETE',
+        headers: {
+            'Authorization': 'Bearer abcdef123456'
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        location.reload(); // Reload the page on successful marker deletion
+    })
+    .catch(error => console.error('Error deleting marker:', error));
 }
