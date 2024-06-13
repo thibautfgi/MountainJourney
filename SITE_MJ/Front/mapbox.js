@@ -1,7 +1,27 @@
 import { MAPBOX_ACCESS_TOKEN } from './config.js';
 
+// Function to get a cookie by name
+function getCookie(name) {
+    let cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring((name + '=').length, cookie.length);
+        }
+    }
+    return '';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
+
+    // Get User_Id from cookies
+    const userId = getCookie('userId');
+    if (!userId) {
+        alert('User is not logged in!');
+        return;
+    }
+
     var map = new mapboxgl.Map({
         container: 'map',
         style: 'mapbox://styles/mapbox/streets-v11',
@@ -34,12 +54,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 20);
     });
 
-    // Fetch and display user maps
-    fetchUserMaps(1); // Fetch maps for User_Id = 1
-    fetchUserLikes(1); // Fetch liked maps for User_Id = 1
+    // Fetch and display user maps and liked maps
+    fetchUserMaps(userId);
+    fetchUserLikes(userId);
 
     // Handle form submission for creating a new map
-    document.getElementById('create-map-form').addEventListener('submit', createMap);
+    document.getElementById('create-map-form').addEventListener('submit', (event) => createMap(event, userId));
 });
 
 function fetchAllMarksAndRoutes(map) {
@@ -177,15 +197,16 @@ function fetchMapDetails(mapId) {
         });
 }
 
-function createMap(event) {
+function createMap(event, userId) {
     event.preventDefault();
 
+    const mapyo = parseInt(userId);
     const mapName = document.getElementById('map-name').value;
     const mapDescription = document.getElementById('map-description').value;
     const mapImage = document.getElementById('map-image').value;
 
     const mapData = {
-        User_Id: 1,
+        User_Id: mapyo,
         Map_Name: mapName,
         Map_Description: mapDescription,
         Map_LikeNumber: 0,
@@ -214,8 +235,6 @@ function createMap(event) {
         location.reload(); // Reload the page on successful map creation
     })
     .catch(error => console.error('Error creating map:', error));
-    location.reload();
-    
 }
 
 function createMapCard(map) {
