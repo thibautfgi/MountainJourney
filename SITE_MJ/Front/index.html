@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mountain Journey</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Bienvenue - Mountain Journey</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="index.css">
-    <link href="https://fonts.googleapis.com/css2?family=Kanit&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="icon" href="ImageRessource/logo-transp.png" type="image/png">
     <script src="auth.js" defer></script>
 </head>
-
 <body>
     <header class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -35,52 +33,21 @@
             </div>
         </nav>
     </header>
-    
 
-    <main class="main-content text-center" style="padding-top: 120px;">
-        <h1>Votre aventure commence ici</h1>
-        <div class="search-bar mt-3">
-            <input type="text" class="form-control" placeholder="Gr, refuge, village...">
-            <button class="btn btn-primary mt-2">Explorez vos alentours</button>
+    <main class="text-center">
+        <div class="message-container">
+            <h1 id="rotating-text"></h1>
+            <a href="explorer.html" class="btn btn-primary btn-lg mt-3">Commencez l'exploration</a>
         </div>
     </main>
 
-    <section class="section text-center py-5">
-        <h2>Créez votre voyage</h2>
-        <div class="section-content">
-            <div class="gallery">
-                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
-                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
-                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
-                <img src="ImageRessource/Paysage2.JPG" alt="Paysage">
-            </div>
-            <div class="text-content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at ligula id libero pretium consequat.</p>
-            </div>
-        </div>
-    </section>
-
-    <section class="section text-center py-5">
-        <h2>Découvrez de nouveaux horizons</h2>
-        <div class="section-content">
-            <div class="text-content">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent at ligula id libero pretium consequat.</p>
-            </div>
-            <div class="gallery">
-                <img src="ImageRessource/Paysage2.JPG" alt="GR91 - Vercors">
-                <img src="ImageRessource/Paysage2.JPG" alt="GR20 - Corse">
-            </div>
-        </div>
-    </section>
-
     <footer class="text-center py-4">
-        <p>&copy; 2024 Mountain Journey All Rights Reserved.</p>
+        <p>© 2024 Mountain Journey. All Rights Reserved</p>
     </footer>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <script src="script.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="bienvenue.js"></script>
 </body>
-
 </html>

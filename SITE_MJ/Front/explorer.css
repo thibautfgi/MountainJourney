@@ -1,0 +1,99 @@
+@import url('style.css');
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+main {
+    background: url('ImageRessource/Paysage2.JPG') no-repeat center center fixed;
+    background-size: cover;
+    color: #FFF; /* Couleur du texte en blanc pour contraste */
+    text-shadow: 0 0 10px rgba(0, 0, 0, 0.7); /* Pour rendre le texte plus lisible */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Assurer que le main prenne toute la hauteur de la fenêtre */
+    padding: 0 20px; /* Padding horizontal pour éviter que le contenu touche les bords */
+}
+
+.search-container {
+    width: 100%;
+    max-width: 600px;
+}
+
+.search-bar {
+    border-radius: 25px;
+    display: flex; /* flex pour aligner l'icône et l'entrée */
+    align-items: center; /* Centre verticalement les éléments */
+    width: 100%; /* La barre de recherche prend toute la largeur du conteneur */
+    padding-left: 40px; /* Espace pour l'icône à l'intérieur de la barre de recherche */
+    margin-bottom: 20px; /* Espacement inférieur entre la barre de recherche et le bouton */
+    background: rgba(255, 255, 255, 0.8); /* Ajoute un fond semi-transparent */
+}
+
+.search-bar .form-control {
+    border-radius: 25px;
+    margin-bottom: 0;
+    height: 50px; /* Augmente la hauteur pour correspondre au design souhaité */
+    font-size: 18px; /* Augmente la taille de la police */
+    flex: 1; /* Laisse l'entrée prendre tout l'espace restant */
+    padding-left: 10px; /* Ajuste le padding pour laisser de l'espace pour l'icône */
+}
+
+.search-icon {
+    font-size: 20px;
+    color: #ffffff;
+    position: absolute;
+    left: 10px; /* Ajuste la position gauche */
+}
+
+.section {
+    padding: 50px;
+    background-color: #F7E9E0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.section:nth-child(even) {
+    background-color: #FFF8F0;
+}
+
+.section h2 {
+    margin-bottom: 20px;
+}
+
+.section-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.section-content .text-content {
+    flex: 1;
+    text-align: left;
+    padding: 20px;
+    max-width: 500px;
+}
+
+.section-content .gallery {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+}
+
+.gallery img {
+    border-radius: 15px;
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+}
