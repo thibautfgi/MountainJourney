@@ -79,8 +79,8 @@ Thibaut Figueira :
 ### Charte de projet
 - Élaboration de la charte de projet définissant les objectifs, les parties prenantes, les délais, et les livrables.
 
-### Aide du DMC (Document de Mise en Conformité)
-- Rédaction du document de mise en conformité pour assurer que le projet respecte les normes et les réglementations en vigueur.
+### Aide du MCD (Model conceptuel des données)
+- Aide au schéma du MCD
 
 ### Documentation Docker
 - Création de la documentation détaillant l'utilisation de Docker pour le projet, incluant la configuration des conteneurs et l'utilisation de Docker-compose.
