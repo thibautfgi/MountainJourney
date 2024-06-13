@@ -1,5 +1,17 @@
 import { MAPBOX_ACCESS_TOKEN } from './config.js';
 
+// Function to get a cookie by name
+function getCookie(name) {
+    let cookies = document.cookie.split(';');
+    for (let i = 0; i < cookies.length; i++) {
+        let cookie = cookies[i].trim();
+        if (cookie.startsWith(name + '=')) {
+            return cookie.substring((name + '=').length, cookie.length);
+        }
+    }
+    return '';
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     mapboxgl.accessToken = MAPBOX_ACCESS_TOKEN;
     const mapId = new URLSearchParams(window.location.search).get('mapId');
@@ -67,6 +79,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and populate marks for route creation
     fetchUserMarks(mapId); // Fetch marks for the specific map
+
+    // Hide sidebar if user is not logged in
+    const userId = getCookie('userId');
+    if (!userId) {
+        document.getElementById('sidebar').style.display = 'none';
+        document.getElementById('mainContent').classList.remove('col-8');
+        document.getElementById('mainContent').classList.add('col-12');
+        document.getElementById('toggleButton').style.display = 'none';
+        setTimeout(() => {
+            map.resize();
+        }, 20);
+    }
 });
 
 function fetchMapDetails(mapId) {
@@ -132,7 +156,7 @@ function fetchAndDrawRoutes(mapId, map) {
         .catch(error => console.error('Error fetching routes:', error));
 }
 
-function drawRoute(route, map) { //black magic
+function drawRoute(route, map) {
     Promise.all([
         fetch(`http://localhost:8080/api/marks/${route.Mark_Start}`)
             .then(response => response.json()),
