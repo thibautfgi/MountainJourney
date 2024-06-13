@@ -41,6 +41,7 @@
     <!-- MAP start here -->
     <div class="row no-gutters">
         <div class="col-4 classeur collapse show" id="sidebar">
+            <button class="btn-sub" id="backButton" style="position: absolute; top: 15px; right: 10px;"> Retour aux cartes </button>
             <ul class="nav nav-tabs" id="myTab" role="tablist">
                 <li class="nav-item" role="presentation">
                     <a class="nav-link active" id="map-info-tab" data-toggle="tab" href="#map-info" role="tab" aria-controls="map-info" aria-selected="true">Map Info</a>
@@ -73,9 +74,9 @@
                             <label for="marker-lng">Longitude</label>
                             <input type="text" class="form-control" id="marker-lng" readonly>
                         </div>
-                        <div class="form-group ml-4 mr-4 d-flex justify-content-between">
+                        <div class="form-group ml-1 mr-4 d-flex justify-content-between">
                             <button type="button" class="btn-sub2" id="place-marker-button">Place Marker</button>
-                            <button type="button" class="btn-sub" id="add-marker-button">Add to Map</button>
+                            <button type="submit" class="btn-sub" id="add-marker-button">Add to Map</button>
                         </div>
                     </form>
                     <!-- Form for adding a route -->
@@ -101,7 +102,6 @@
                         </div>
                     </form>
                 </div>
-                
             </div>
         </div>
         <div class="col-8 position-relative" id="mainContent">

@@ -1,22 +1,25 @@
 <h1 align="center">MountainJourney</h1>
 
 <p align="center">
-  <img src="/SITE_MJ/Front/ImageRessource/logo.png" alt="MountainJourney Logo" width="200">
+  <img src="/SITE_MJ/Front/ImageRessource/logo-transp.png" alt="MountainJourney Logo" width="200">
 </p>
 
 ## Description
 
-MountainJourney est une application web pour gérer et afficher des informations sur les randonnées en montagne. Elle inclut une API pour gérer les utilisateurs et les données des randonnées, ainsi qu'un frontend pour l'affichage de ces informations.
+MountainJourney is the new web application for create manage and share your hiking map for your next trip. MJ have a API for manage users information and hiking map, and use the frontend API of Mapbox for create the map.
 
-## Prérequis
+This is a project free of right. You can use it has you wish if you integre our names. Thanks for your reading.
 
-- Docker
-- Docker Compose
-- Postman
+## Needs
+
+- Docker.
+- MySql.
+- Dotnet.
+- Mysql workbench and Postman agent (for local test).
 
 ## Installation
 
-Clonez le dépôt et naviguez dans le répertoire du projet :
+Clone the repot and explore the project directory :
 
 ```bash
 git clone <https://github.com/DuunKy/MontainJourney.git>
@@ -25,53 +28,68 @@ cd MontainJourney
 
 ``` 
 
-## Lancer l'application localement
-### Lancer l'API localement
-Pour lancer l'API en local, exécutez la commande suivante :
+## Local test of our project :
+
+
+For test our project on local, use the command bellow :
 
 ```bash
-dotnet run --project API_TEST/
 dotnet run --project SITE_MJ/API_MJ/
 ```
 
-## Utilisation avec Postman
-Vous pouvez tester les endpoints de l'API en utilisant Postman avec le lien suivant :
+## Use Postman
+Try it on Postamn for a better view of our API capabilities
 
 [Workspace Postman](https://blue-comet-541359.postman.co/workspace/Mountain-Journey~ef3aa6a7-6af4-474c-9a98-4e77433ef51b/overview)
 
-## Jeton d'API
-Utilisez le jeton d'API suivant pour l'authentification :
+## API Bearer Tokens
+
+Here our bearer Tokens for the protect request on the API :
 
 ```bash
 abcdef123456
 ```
 
 
->**Attention:**
-Le token Mapbox est caché dans un fichier .gitignore. Pour tout accès à ce projet et demande de clef, veuillez contacter un administrateur.
+>**Warning :**
 
-## Lancer l'application avec Docker Compose
-Pour lancer l'application avec Docker Compose, exécutez la commande suivante :
+The mapbox tokens is hiding on a .gitignore file. For all acces, you will need to ask the keys to a admin.
+
+## Lauch the application with Docker Compose :
+
+For lauch the web application, use the command below :
 
 ```bash
 docker-compose up --build
 ```
-Cette commande va :
 
+## Shut down the application :
 
-
-## Arrêter les services
-Pour arrêter les services Docker, utilisez la commande :
+For stop the service, use the command :
 
 ```bash
 docker-compose down
 ```
 
-> ℹ️ **Info:** Dans la documentation tout est expliqué pour le Docker.
 
->**Attention:** Il se peut que git modifie la séquence de fin de ligne afin d'éviter les sh éxecutable, histoire de sécurité. Si il ne trouve pas votre .sh il se peut que vous devez modifier l'encodage CRLF -> LF.
+
+>### ** WARNING : ** Sometime, git can modify the sh executable endline and break it. If that happen, you will need to change your encoding of your sh file from CRLF -> LF (bottom right corner of VS CODE).
 
 ## Auteurs
- - ThibautFgi
- - DunKy
+
+ - ThibautFgi (Github : https://github.com/thibautfgi)
+ - DunKy (Github : https://github.com/DuunKy)
+
+# **Documentationn : ** 
+
+For a more advance documentation on the web application look into the folder :
+
+- "Documentation/."
+
+### DMC
+
+<p align="center">
+  <img src="/Documentation/MJ_DMC.png" alt="MountainJourney Logo">
+</p>
+
 
