@@ -1,30 +1,32 @@
-Voici la liste du suivis des taches et le temps quels ont pris.
+# Suivi des Tâches
+
+## Thibaut Figueira
+
+### Mai 2024
+- **28/05/2024** : Évaluation de la faisabilité technique du projet avec Mapbox.
+- **29/05/2024** : Mise en place du projet, création de la charte du projet, décision des frameworks.
+- **30/05/2024** : Apprentissage de Docker et tests.
+- **31/05/2024** : Mise en place de la DB en local via MySQL Workbench, configuration de la DB via MySQL.
+
+### Juin 2024
+- **03/06/2024** : Mise en place de Docker.
+- **04/06/2024** : Premier jet Mapbox avec interaction UI (bouton), protection du token Mapbox.
+- **05/06/2024** : Révision d'une ancienne API, suppression de fonctionnalités inutiles, ajout de fonctionnalités type tokens vérification.
+- **06/06/2024** : Mise en place du DMC, révision de la DB, ajout de fonctionnalités et de fake data.
+- **07/06/2024** : Mise en place de Postman, création des API models, ajout de tests API sur la connexion.
+- **08/06/2024** : Développement des contrôleurs de l'API.
+- **09/06/2024** : Développement des contrôleurs de l'API et documentation.
+- **10/06/2024** : Documentation API, configuration des politiques CORS, gestion sur Trello.
+- **11/06/2024** : Création de la maquette Front sur Figma.
+- **12/06/2024** : Développement de `mapbox.html`.
+- **13/06/2024** : Développement de `mapbox.html` et `mapdetails.html`.
 
 
-Thibaut Figueira :
-
-
-[28/05/2024] - Evalution de la faisibiliter technique du projet avec mapbox.
-[29/05/2024] - Mise en place du projet, création de la charte du projet, decision des frameworks.
-[30/05/2024] - Apprentissage de Docker et test.
-[31/05/2024] - Mise en place de la db en local via mysqlworkbench, db via mysql.
-[03/06/2024] - Mise en place du Docker.
-[04/06/2024] - premier jet mapbosx avec interaction ui = button, protection du token mapbox.
-[05/06/2024] - Revision d'une ancienne api, suppresion de fonctionnalite inutile, ajout de fonctionnalite type tokens verification.
-[06/06/2024] - mise en place du dmc, révision de la db, ajout de fonctionalite et de fake data.
-[07/06/2024] - Mise en place de postman, des api models, ajout de test api sur la connection.
-[08/06/2024] - Api controllers.
-[09/06/2024] - Api controllers, et documentation.
-[10/06/2024] - Documentation Api, cors policy, trello manage.
-[11/06/2024] - Maquette Front figma.
-[12/06/2024] - Mapbox.html.
-[13/06/2024] - Mapbox.html and mapdetails.html.
 
 
 
 
-
-# DunKy
+## DunKy
 
 ## Infrastructure
 
