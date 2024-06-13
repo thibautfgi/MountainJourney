@@ -35,20 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Handle form submission for creating a new map
     document.getElementById('create-map-form').addEventListener('submit', createMap);
-
-    // Handle placing a marker on the map
-    document.getElementById('place-marker-button').addEventListener('click', () => {
-        map.once('click', (e) => {
-            const marker = new mapboxgl.Marker()
-                .setLngLat([e.lngLat.lng, e.lngLat.lat])
-                .addTo(map);
-            document.getElementById('marker-lng').value = e.lngLat.lng;
-            document.getElementById('marker-lat').value = e.lngLat.lat;
-        });
-    });
-
-    // Handle form submission for adding a new mark
-    document.getElementById('add-marker-form').addEventListener('submit', createMark);
 });
 
 function fetchUserMaps(userId) {
@@ -143,43 +129,6 @@ function createMap(event) {
     location.reload();
 }
 
-function createMark(event) {
-    event.preventDefault();
-
-    const markerName = document.getElementById('marker-name').value;
-    const markerDescription = document.getElementById('marker-description').value;
-    const markerLat = parseFloat(document.getElementById('marker-lat').value);
-    const markerLng = parseFloat(document.getElementById('marker-lng').value);
-
-    const markData = {
-        Map_Id: 1, // Assuming you have a Map_Id to associate this mark with
-        Mark_Name: markerName,
-        Mark_Description: markerDescription,
-        Mark_Latitude: markerLat,
-        Mark_Longitude: markerLng
-    };
-
-    fetch('http://localhost:8080/api/marks', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer abcdef123456'
-        },
-        body: JSON.stringify(markData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(() => {
-        location.reload(); // Reload the page on successful mark creation
-    })
-    .catch(error => console.error('Error creating mark:', error));
-    location.reload();
-}
-
 function createMapCard(map) {
     const mapCard = document.createElement('div');
     mapCard.className = 'card mb-3';
@@ -198,5 +147,8 @@ function createMapCard(map) {
             </div>
         </div>
     `;
+    mapCard.addEventListener('click', () => {
+        window.location.href = `map-details.html?mapId=${map.Map_Id}`;
+    });
     return mapCard;
 }
