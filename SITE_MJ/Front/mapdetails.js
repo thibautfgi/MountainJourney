@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     map.on('load', () => {
         console.log('Map has loaded'); // Debug log
         fetchMapMarks(mapId, map); // Pass the map instance to fetchMapMarks
+        fetchAndDrawRoutes(mapId, map); // Fetch and draw routes
     });
 
     document.getElementById('toggleButton').addEventListener('click', function () {
@@ -113,6 +114,60 @@ function fetchMapMarks(mapId, map) {
         .catch(error => console.error('Error fetching marks:', error));
 }
 
+function fetchAndDrawRoutes(mapId, map) {
+    fetch(`http://localhost:8080/api/maps/${mapId}/routes`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(routes => {
+            routes.forEach(route => {
+                drawRoute(route, map);
+            });
+        })
+        .catch(error => console.error('Error fetching routes:', error));
+}
+
+function drawRoute(route, map) {
+    Promise.all([
+        fetch(`http://localhost:8080/api/marks/${route.Mark_Start}`)
+            .then(response => response.json()),
+        fetch(`http://localhost:8080/api/marks/${route.Mark_End}`)
+            .then(response => response.json())
+    ]).then(([startMark, endMark]) => {
+        const start = [startMark.Mark_Longitude, startMark.Mark_Latitude];
+        const end = [endMark.Mark_Longitude, endMark.Mark_Latitude];
+
+        map.addSource(`route-${route.Route_Id}`, {
+            type: 'geojson',
+            data: {
+                type: 'Feature',
+                properties: {},
+                geometry: {
+                    type: 'LineString',
+                    coordinates: [start, end]
+                }
+            }
+        });
+
+        map.addLayer({
+            id: `route-${route.Route_Id}`,
+            type: 'line',
+            source: `route-${route.Route_Id}`,
+            layout: {
+                'line-join': 'round',
+                'line-cap': 'round'
+            },
+            paint: {
+                'line-color': '#888',
+                'line-width': 6
+            }
+        });
+    }).catch(error => console.error('Error fetching marks for route:', error));
+}
+
 function fetchUserMarks(mapId) {
     fetch(`http://localhost:8080/api/maps/${mapId}/marks`)
         .then(response => {
@@ -174,7 +229,6 @@ function addMarker(event) {
         location.reload(); // Reload the page on successful marker creation
     })
     .catch(error => console.error('Error creating marker:', error));
-    location.reload();
 }
 
 function addRoute(event) {
@@ -211,5 +265,4 @@ function addRoute(event) {
         location.reload(); // Reload the page on successful route creation
     })
     .catch(error => console.error('Error creating route:', error));
-    location.reload();
 }
