@@ -127,6 +127,7 @@ function createMap(event) {
     })
     .catch(error => console.error('Error creating map:', error));
     location.reload();
+    
 }
 
 function createMapCard(map) {

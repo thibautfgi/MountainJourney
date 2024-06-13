@@ -36,6 +36,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }, 20);
     });
 
+    document.getElementById('backButton').addEventListener('click', () => {
+        window.location.href = 'mapbox.html';
+    });
+
     // Fetch and display map details
     fetchMapDetails(mapId);
 
@@ -71,6 +75,7 @@ function fetchMapDetails(mapId) {
         .then(map => {
             const mapInfoContainer = document.getElementById('map-info-container');
             mapInfoContainer.innerHTML = `
+                <img src="${map.Map_Image}" class="card-img p-3" alt="${map.Map_Name}" style="height: 200px; object-fit: cover; border-radius: 10px;">
                 <h3>${map.Map_Name}</h3>
                 <p>${map.Map_Description}</p>
                 <p>${map.Map_TotalDistance}km - ${map.Map_TravelTime} hours</p>
@@ -141,6 +146,7 @@ function addMarker(event) {
         location.reload(); // Reload the page on successful marker creation
     })
     .catch(error => console.error('Error creating marker:', error));
+    location.reload();
 }
 
 function addRoute(event) {
@@ -179,4 +185,3 @@ function addRoute(event) {
     .catch(error => console.error('Error creating route:', error));
     location.reload();
 }
-

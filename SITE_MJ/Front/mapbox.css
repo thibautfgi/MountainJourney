@@ -37,6 +37,7 @@ header {
     border-radius: 1vh;
     border-color: #3891A6;
     transition: background 0.3s, color 0.3s;
+    border: none; /* Remove border */
 }
 
 .btn-sub2 {
@@ -51,6 +52,7 @@ header {
     border-radius: 1vh;
     border-color: #3891A6;
     transition: background 0.3s, color 0.3s;
+    border: none; /* Remove border */
 }
 
 
@@ -66,6 +68,27 @@ header {
     border-radius: 1vh;
     border-color: #3891A6;
     transition: background 0.3s, color 0.3s;
+    border: none; /* Remove border */
+}
+
+.btn-sub4 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    min-width: 100px;
+    border: 2px solid #CEEBBF;
+    border-radius: 5px;
+    margin: 0 10px;
+    padding: 10px 20px;
+    color: #000000;
+    transition: background 0.3s, color 0.3s;
+}
+
+.btn-sub4:hover {
+    text-decoration: none;
+    transform: scale(1.05);
+    transition: 0.5s; /* Remove underline on hover */
 }
 
 
@@ -82,8 +105,8 @@ header {
 
 .navbar-light .navbar-nav .btn-primary:hover,
 .btn-sub:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    transform: scale(1.05);
+    transition: 0.5s;
 }
 
 .navbar-brand img.logo {
