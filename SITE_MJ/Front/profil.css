@@ -16,7 +16,7 @@ main {
     align-items: center;
     padding-top: 50px;
     padding-bottom: 50px; /* Add padding-bottom */
-    background: url('ImageRessource/Paysage2.JPG') no-repeat center center fixed;
+    background: url('ImageRessource/Paysage1.JPG') no-repeat center center fixed;
     background-size: cover;
 }
 

@@ -50,6 +50,16 @@
                 <div class="tab-pane fade show active" id="map-info" role="tabpanel" aria-labelledby="map-info-tab">
                     <!-- Content for Map Info -->
                     <div id="map-info-container" class="scrollable-content"></div> <!-- Container for map information -->
+                    <!-- Comments section -->
+                    <div id="comments-container" class="scrollable-content"></div>
+                    <!-- Form for adding a new comment -->
+                    <form id="add-comment-form">
+                        <div class="form-group ml-4 mr-4">
+                            <label for="comment-content">Add a comment</label>
+                            <textarea class="form-control" id="comment-content" rows="3" required></textarea>
+                        </div>
+                        <button type="submit" class="btn-sub">Post Comment</button>
+                    </form>
                 </div>
                 <div class="tab-pane fade" id="mark" role="tabpanel" aria-labelledby="mark-tab">
                     <!-- Form for adding a marker -->

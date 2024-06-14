@@ -59,6 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display map details
     fetchMapDetails(mapId);
+    // Fetch and display comments
+    fetchComments(mapId);
+
+    // Handle form submission for adding a new comment
+    document.getElementById('add-comment-form').addEventListener('submit', addComment);
 
     // Handle placing a marker on the map
     document.getElementById('place-marker-button').addEventListener('click', () => {
@@ -302,6 +307,82 @@ function addRoute(event) {
     location.reload();
 }
 
+function fetchComments(mapId) {
+    fetch(`http://localhost:8080/api/maps/${mapId}/comments`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(async comments => {
+            const commentsContainer = document.getElementById('comments-container');
+            commentsContainer.innerHTML = ''; // Clear any existing content
+
+            for (let comment of comments) {
+                const userResponse = await fetch(`http://localhost:8080/api/users/${comment.User_Id}`);
+                if (!userResponse.ok) {
+                    throw new Error(`HTTP error! status: ${userResponse.status}`);
+                }
+                const user = await userResponse.json();
+                const commentCard = createCommentCard(comment, user.User_FirstName, user.User_LastName);
+                commentsContainer.appendChild(commentCard);
+            }
+        })
+        .catch(error => console.error('Error fetching comments:', error));
+}
+
+function createCommentCard(comment, userFirstName, userLastName) {
+    const commentCard = document.createElement('div');
+    commentCard.className = 'card mb-3';
+    commentCard.innerHTML = `
+        <div class="card-body">
+            <h5 class="card-title">${userFirstName} ${userLastName}</h5>
+            <p class="card-text">${comment.Comment_Content}</p>
+            <p class="card-text"><small class="text-muted">${comment.Comment_Date}</small></p>
+        </div>
+    `;
+    return commentCard;
+}
+
+function addComment(event) {
+    event.preventDefault();
+
+    const mapId = new URLSearchParams(window.location.search).get('mapId');
+    const userId = getCookie('userId');
+    const commentContent = document.getElementById('comment-content').value;
+    const commentDate = new Date().toISOString().slice(0, 19).replace('T', ' '); // Format date as 'YYYY-MM-DD HH:MM:SS'
+
+    const commentData = {
+        User_Id: parseInt(userId),
+        Map_Id: parseInt(mapId),
+        Comment_Content: commentContent,
+        Comment_Date: commentDate
+    };
+
+    fetch('http://localhost:8080/api/comments', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer abcdef123456'
+        },
+        body: JSON.stringify(commentData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+        
+    })
+    .then(() => {
+        document.getElementById('comment-content').value = ''; // Clear the comment input field
+        fetchComments(mapId); // Reload comments to display the new one
+    })
+    .catch(error => console.error('Error adding comment:', error));
+    location.reload();
+}
+
 // Ensure the deleteMarker function is in the global scope
 window.deleteMarker = function (markId) {
     fetch(`http://localhost:8080/api/marks/${markId}`, {
@@ -317,4 +398,6 @@ window.deleteMarker = function (markId) {
         location.reload(); // Reload the page on successful marker deletion
     })
     .catch(error => console.error('Error deleting marker:', error));
+    
+    
 }
